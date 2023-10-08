@@ -1,4 +1,4 @@
-package me.amirkazemzade.materialmusicplayer.ui.theme
+package me.amirkazemzade.materialmusicplayer.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

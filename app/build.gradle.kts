@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
+    id("org.jlleitschuh.gradle.ktlint") version "11.6.0"
 }
 
 android {
@@ -50,15 +52,15 @@ android {
 }
 
 dependencies {
-    val lifecycle_version = "2.6.2"
-    val ktor_version= "2.3.5"
-    val koin_android_version = "3.5.0"
+    val lifecycleVersion = "2.6.2"
+    val ktorVersion = "2.3.5"
+    val koinAndroidVersion = "3.5.0"
 
-    /// Core
+    // / Core
 
     implementation("androidx.core:core-ktx:1.12.0")
 
-    /// Compose
+    // / Compose
 
     implementation("androidx.activity:activity-compose:1.8.0")
     implementation(platform("androidx.compose:compose-bom:2023.09.02"))
@@ -67,45 +69,42 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
 
-    /// Lifecycle
+    // / Lifecycle
 
     // Lifecycle utilities for Compose
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     // ViewModel utilities for Compose
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
     // Lifecycles only (without ViewModel or LiveData)
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
     // Lifecycle utilities for Compose
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
 
-    /// API
+    // / API
 
     // Ktor
-    implementation("io.ktor:ktor-client-core:$ktor_version")
-    implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
 
-    /// DI
+    // / DI
 
     // Koin
-    implementation("io.insert-koin:koin-android:$koin_android_version")
-    implementation ("io.insert-koin:koin-androidx-compose:$koin_android_version")
+    implementation("io.insert-koin:koin-androidx-compose:$koinAndroidVersion")
     // Navigation Graph
-    implementation("io.insert-koin:koin-androidx-compose-navigation:$koin_android_version")
+    implementation("io.insert-koin:koin-androidx-compose-navigation:$koinAndroidVersion")
 
-
-    /// Test
+    // / Test
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("com.lemonappdev:konsist:0.12.2")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.09.02"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 
-    /// Debug
+    // / Debug
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
