@@ -1,4 +1,4 @@
-package me.amirkazemzade.materialmusicplayer
+package me.amirkazemzade.materialmusicplayer.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import me.amirkazemzade.materialmusicplayer.ui.theme.MaterialMusicPlayerTheme
+import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicPlayerTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
