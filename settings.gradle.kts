@@ -10,9 +10,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://androidx.dev/storage/compose-compiler/repository/")
+        }
     }
 }
 
 rootProject.name = "Material Music Player"
 include(":app")
- 
