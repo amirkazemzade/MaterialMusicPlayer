@@ -1,5 +1,6 @@
 package me.amirkazemzade.materialmusicplayer.presentation.features.musiclist.components
 
+import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,7 +16,8 @@ import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicP
 @Composable
 fun MusicList(
     modifier: Modifier = Modifier,
-    musics: List<MusicFile>
+    musics: List<MusicFile>,
+    onItemClick: (music: MusicFile) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize()
@@ -23,7 +25,8 @@ fun MusicList(
         items(musics) { music ->
             MusicListItem(
                 modifier = Modifier.fillMaxWidth(),
-                music = music
+                music = music,
+                onClick = onItemClick
             )
         }
     }
@@ -46,7 +49,8 @@ private fun PreviewMusicList() {
                         dateModified = "1696781534",
                         duration = "163500",
                         genre = "Pop",
-                        year = "2022"
+                        year = "2022",
+                        uri = Uri.EMPTY
                     ),
                     MusicFile(
                         id = 1000000034,
@@ -59,7 +63,8 @@ private fun PreviewMusicList() {
                         dateModified = "1696781535",
                         duration = "213342",
                         genre = null,
-                        year = "2022"
+                        year = "2022",
+                        uri = Uri.EMPTY
                     ),
                     MusicFile(
                         id = 1000000035,
@@ -72,7 +77,8 @@ private fun PreviewMusicList() {
                         dateModified = "1696781536",
                         duration = "154514",
                         genre = "Pop",
-                        year = "2022"
+                        year = "2022",
+                        uri = Uri.EMPTY
                     )
                 )
             )
@@ -83,7 +89,8 @@ private fun PreviewMusicList() {
         Scaffold {
             MusicList(
                 modifier = Modifier.padding(it),
-                musics = musicList
+                musics = musicList,
+                onItemClick = {}
             )
         }
     }

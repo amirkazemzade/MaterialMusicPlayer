@@ -14,6 +14,8 @@ import me.amirkazemzade.materialmusicplayer.common.Status
 import me.amirkazemzade.materialmusicplayer.presentation.features.musiclist.components.MusicList
 import org.koin.androidx.compose.koinViewModel
 
+const val route = "MusicList"
+
 @Composable
 fun MusicListScreen(
     modifier: Modifier = Modifier,
@@ -37,9 +39,11 @@ fun MusicListScreen(
                             repeat(10) {
                                 addAll(
                                     state.data!!
-
                                 )
                             }
+                        },
+                        onItemClick = { musicFile ->
+                            viewModel.navigateToMusicPlayer(musicFile)
                         }
                     )
                 }

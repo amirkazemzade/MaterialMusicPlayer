@@ -2,6 +2,8 @@ package me.amirkazemzade.materialmusicplayer.domain.repository
 
 import android.content.Context
 import android.provider.MediaStore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import me.amirkazemzade.materialmusicplayer.data.repository.MusicRepository
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import me.amirkazemzade.materialmusicplayer.domain.model.musicProjection
@@ -10,7 +12,9 @@ import me.amirkazemzade.materialmusicplayer.domain.model.toMusicFile
 class MusicRepositoryImpl(
     private val context: Context
 ) : MusicRepository {
-    override fun getMusicList(sortOrder: String?): List<MusicFile> {
+    override suspend fun getMusicList(sortOrder: String?): List<MusicFile> = withContext(
+        Dispatchers.IO
+    ) {
         // Query the MediaStore.Audio.Media table.
         val cursor = context.contentResolver.query(
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -34,10 +38,10 @@ class MusicRepositoryImpl(
             cursor.close()
 
             // Return the list of music files.
-            return musicFiles
+            return@withContext musicFiles
         } else {
             // No music files found.
-            return emptyList()
+            return@withContext emptyList()
         }
     }
 }

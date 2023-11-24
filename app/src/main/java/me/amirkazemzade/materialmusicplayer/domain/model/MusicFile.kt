@@ -1,7 +1,9 @@
 package me.amirkazemzade.materialmusicplayer.domain.model
 
+import android.content.ContentUris
 import android.database.Cursor
 import android.media.MediaMetadataRetriever
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import androidx.core.database.getStringOrNull
@@ -17,7 +19,8 @@ data class MusicFile(
     val duration: String,
     val genre: String? = null,
     val year: String? = null,
-    val albumCover: ByteArray? = null
+    val albumCover: ByteArray? = null,
+    val uri: Uri
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -45,6 +48,7 @@ data class MusicFile(
 }
 
 fun Cursor.toMusicFile(): MusicFile {
+    val id = getLong(getColumnIndexOrThrow(MediaStore.Audio.Media._ID))
     val filePath = getString(
         getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
     )
@@ -54,7 +58,7 @@ fun Cursor.toMusicFile(): MusicFile {
     mediaMetadataRetriever.release()
 
     return MusicFile(
-        id = getLong(getColumnIndexOrThrow(MediaStore.Audio.Media._ID)),
+        id = id,
         title = getString(
             getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
         ),
@@ -82,7 +86,11 @@ fun Cursor.toMusicFile(): MusicFile {
         year = getStringOrNull(
             getColumnIndex(MediaStore.Audio.Media.YEAR)
         ),
-        albumCover = albumCoverImage
+        albumCover = albumCoverImage,
+        uri = ContentUris.withAppendedId(
+            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+            id
+        )
     )
 }
 

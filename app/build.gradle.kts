@@ -55,6 +55,7 @@ dependencies {
     val lifecycleVersion = "2.6.2"
     val ktorVersion = "2.3.5"
     val koinAndroidVersion = "3.5.0"
+    val media3Version = "1.1.1"
 
     /* Core */
 
@@ -69,6 +70,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
+    implementation("androidx.navigation:navigation-compose:2.5.3")
 
     /* Lifecycle */
 
@@ -82,6 +84,12 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
     // Lifecycle utilities for Compose
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
+
+    /* Player */
+
+    implementation("androidx.media3:media3-exoplayer:$media3Version")
+    implementation("androidx.media3:media3-ui:$media3Version")
+    implementation("androidx.media3:media3-common:$media3Version")
 
     /* API */
 
