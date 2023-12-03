@@ -1,12 +1,9 @@
-package me.amirkazemzade.materialmusicplayer.presentation.features.musiclist.components
+package me.amirkazemzade.materialmusicplayer.presentation.features.music.list.components
 
-import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,13 +21,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.amirkazemzade.materialmusicplayer.R
+import me.amirkazemzade.materialmusicplayer.common.toImageBitmap
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
+import me.amirkazemzade.materialmusicplayer.presentation.common.AlbumCover
 import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicPlayerTheme
 
 @Composable
@@ -38,38 +36,20 @@ fun MusicListItem(
     modifier: Modifier = Modifier,
     music: MusicFile,
     isFavorite: Boolean = false,
-    onClick: (music: MusicFile) -> Unit
+    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
             .padding(horizontal = 16.dp, vertical = 6.dp)
-            .clickable { onClick(music) },
+            .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (music.albumCover != null) {
-            Image(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(RoundedCornerShape(20.dp)),
-                bitmap = BitmapFactory.decodeByteArray(music.albumCover, 0, music.albumCover.size)
-                    .asImageBitmap(),
-                contentDescription = "Song's Album Cover Image"
-            )
-        } else {
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(MaterialTheme.colorScheme.inverseSurface),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painterResource(id = R.drawable.baseline_music_note_24),
-                    tint = MaterialTheme.colorScheme.inverseOnSurface,
-                    contentDescription = "Music Note Icon"
-                )
-            }
-        }
+        AlbumCover(
+            modifier = Modifier
+                .size(48.dp)
+                .clip(RoundedCornerShape(20.dp)),
+            cover = music.albumCover?.toImageBitmap()
+        )
         Spacer(modifier = Modifier.width(16.dp))
         Column(
             modifier = Modifier

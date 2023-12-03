@@ -1,11 +1,11 @@
-package me.amirkazemzade.materialmusicplayer.presentation.features.musiclist.components
+package me.amirkazemzade.materialmusicplayer.presentation.features.music.list.components
 
 import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,19 +14,19 @@ import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicPlayerTheme
 
 @Composable
-fun MusicList(
+fun MusicListContent(
     modifier: Modifier = Modifier,
     musics: List<MusicFile>,
-    onItemClick: (music: MusicFile) -> Unit
+    onItemClick: (index: Int) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {
-        items(musics) { music ->
+        itemsIndexed(musics) { index, music ->
             MusicListItem(
                 modifier = Modifier.fillMaxWidth(),
                 music = music,
-                onClick = onItemClick
+                onClick = { onItemClick(index) }
             )
         }
     }
@@ -87,7 +87,7 @@ private fun PreviewMusicList() {
 
     MaterialMusicPlayerTheme {
         Scaffold {
-            MusicList(
+            MusicListContent(
                 modifier = Modifier.padding(it),
                 musics = musicList,
                 onItemClick = {}

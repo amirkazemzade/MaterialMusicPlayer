@@ -1,13 +1,13 @@
-package me.amirkazemzade.materialmusicplayer.domain.repository
+package me.amirkazemzade.materialmusicplayer.data.repository
 
 import android.content.Context
 import android.provider.MediaStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.amirkazemzade.materialmusicplayer.data.repository.MusicRepository
+import me.amirkazemzade.materialmusicplayer.data.mappers.toMusicFile
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import me.amirkazemzade.materialmusicplayer.domain.model.musicProjection
-import me.amirkazemzade.materialmusicplayer.domain.model.toMusicFile
+import me.amirkazemzade.materialmusicplayer.domain.repository.MusicRepository
 
 class MusicRepositoryImpl(
     private val context: Context

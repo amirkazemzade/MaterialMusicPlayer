@@ -1,4 +1,4 @@
-package me.amirkazemzade.materialmusicplayer.data.repository
+package me.amirkazemzade.materialmusicplayer.domain.repository
 
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 
