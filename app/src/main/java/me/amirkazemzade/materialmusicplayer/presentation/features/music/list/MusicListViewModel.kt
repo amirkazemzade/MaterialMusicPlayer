@@ -1,21 +1,23 @@
-package me.amirkazemzade.materialmusicplayer.presentation.features.musiclist
+package me.amirkazemzade.materialmusicplayer.presentation.features.music.list
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.ktor.util.encodeBase64
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import me.amirkazemzade.materialmusicplayer.common.Status
+import me.amirkazemzade.materialmusicplayer.common.reorder
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
+import me.amirkazemzade.materialmusicplayer.domain.model.Status
 import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMusicListUseCase
-import me.amirkazemzade.materialmusicplayer.presentation.navigation.NavTarget
 import me.amirkazemzade.materialmusicplayer.presentation.navigation.Navigator
 
 class MusicListViewModel(
     private val getMusicListUseCase: GetMusicListUseCase,
-    private val navigator: Navigator
+    private val navigator: Navigator,
+    private val player: Player
 ) : ViewModel() {
 
     private var _state = mutableStateOf<Status<List<MusicFile>>>(Status.Loading())
@@ -32,8 +34,14 @@ class MusicListViewModel(
             .launchIn(viewModelScope)
     }
 
-    fun navigateToMusicPlayer(musicFile: MusicFile) {
-        val encodedMusicUri = musicFile.uri.toString().encodeBase64()
-        navigator.navigateTo(NavTarget.MusicPlayer(encodedMusicUri))
+    fun playMusic(index: Int) {
+        val playList = state.value.data
+            ?.reorder(index)
+            ?.map { MediaItem.fromUri(it.uri) }
+        playList?.let {
+            player.clearMediaItems()
+            player.setMediaItems(playList)
+            player.play()
+        }
     }
 }
