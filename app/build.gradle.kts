@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
-    id("org.jlleitschuh.gradle.ktlint") version "11.6.0"
+    id("io.gitlab.arturbosch.detekt") version ("1.23.4")
 }
 
 android {
@@ -27,7 +27,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -51,18 +51,26 @@ android {
     }
 }
 
+detekt {
+    parallel = true
+    dependencies {
+        detektPlugins("com.twitter.compose.rules:detekt:0.0.26")
+    }
+    config.setFrom("src/main/java/me/amirkazemzade/materialmusicplayer/presentation/config/detekt/detekt.yml")
+}
+
 dependencies {
     val lifecycleVersion = "2.6.2"
     val ktorVersion = "2.3.6"
     val koinAndroidVersion = "3.5.0"
     val media3Version = "1.2.0"
 
-    /* Core */
+    // Core
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.6")
 
-    /* Compose */
+    // Compose
 
     implementation("androidx.activity:activity-compose:1.8.1")
     implementation(platform("androidx.compose:compose-bom:2023.10.01"))
@@ -73,7 +81,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
     implementation("androidx.navigation:navigation-compose:2.7.5")
 
-    /* Lifecycle */
+    // Lifecycle
 
     // Lifecycle utilities for Compose
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
@@ -86,19 +94,20 @@ dependencies {
     // Lifecycle utilities for Compose
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
 
-    /* Player */
+    // Player
 
     implementation("androidx.media3:media3-exoplayer:$media3Version")
     implementation("androidx.media3:media3-ui:$media3Version")
     implementation("androidx.media3:media3-common:$media3Version")
+    implementation("androidx.media3:media3-session:$media3Version")
 
-    /* API */
+    // API
 
     // Ktor
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
 
-    /* DI */
+    // DI
 
     // Koin
     implementation("io.insert-koin:koin-android:$koinAndroidVersion")
@@ -106,7 +115,7 @@ dependencies {
     // Navigation Graph
     implementation("io.insert-koin:koin-androidx-compose-navigation:$koinAndroidVersion")
 
-    /* Test */
+    // Test
 
     testImplementation("junit:junit:4.13.2")
 
@@ -115,7 +124,7 @@ dependencies {
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.10.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 
-    /* Debug */
+    // Debug
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
