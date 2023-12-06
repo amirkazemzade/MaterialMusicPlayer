@@ -5,23 +5,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
-import androidx.media3.common.Player
+import androidx.media3.session.MediaController
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import me.amirkazemzade.materialmusicplayer.common.reorder
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import me.amirkazemzade.materialmusicplayer.domain.model.Status
+import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMediaControllerUseCase
 import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMusicListUseCase
-import me.amirkazemzade.materialmusicplayer.presentation.navigation.Navigator
 
 class MusicListViewModel(
     private val getMusicListUseCase: GetMusicListUseCase,
-    private val navigator: Navigator,
-    private val player: Player
+    getMediaControllerUseCase: GetMediaControllerUseCase,
 ) : ViewModel() {
+    val mediaControllerState = getMediaControllerUseCase()
 
-    private var _state = mutableStateOf<Status<List<MusicFile>>>(Status.Loading())
-    val state: State<Status<List<MusicFile>>> = _state
+    private var _state = mutableStateOf<Status<ImmutableList<MusicFile>>>(Status.Loading())
+    val state: State<Status<ImmutableList<MusicFile>>> = _state
 
     init {
         getMusicList()
@@ -34,14 +35,24 @@ class MusicListViewModel(
             .launchIn(viewModelScope)
     }
 
-    fun playMusic(index: Int) {
-        val playList = state.value.data
-            ?.reorder(index)
-            ?.map { MediaItem.fromUri(it.uri) }
+    fun playMusic(
+        index: Int,
+        mediaController: MediaController,
+    ) {
+        val playList =
+            state.value.data
+                ?.reorder(index)
+                ?.map { MediaItem.fromUri(it.uri) }
         playList?.let {
-            player.clearMediaItems()
-            player.setMediaItems(playList)
-            player.play()
+            mediaController.clearMediaItems()
+            mediaController.setMediaItems(playList)
+            mediaController.prepare()
+            mediaController.play()
         }
+    }
+
+    override fun onCleared() {
+        mediaControllerState.value.data?.release()
+        super.onCleared()
     }
 }

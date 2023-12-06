@@ -5,5 +5,5 @@ sealed class NavTarget(val label: String) {
 }
 
 enum class ModuleRoutes(val label: String) {
-    MusicList("Music")
+    MusicList("Music"),
 }

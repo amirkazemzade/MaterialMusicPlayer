@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Material Music Player</string>
-    <string name="audio_permission_request">The music and audio permission is mandatory for this app to work. \nPlease grant the permission.</string>
+    <string name="audio_permission_request">The music and audio permission is mandatory for fetching and playing your musics. \nPlease grant the permission.</string>
+    <string name="storage_permission_request">The storage permission is mandatory for fetching and playing your musics. \nPlease grant the permission.</string>
     <string name="request_permission">Request Permission</string>
     <string name="play">Play</string>
+    <string name="pause">Pause</string>
     <string name="song_s_album_cover_image">Song\'s Album Cover Image</string>
     <string name="music_note_icon">Music Note Icon</string>
 </resources>

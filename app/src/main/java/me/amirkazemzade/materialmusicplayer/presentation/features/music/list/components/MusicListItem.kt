@@ -33,59 +33,64 @@ import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicP
 
 @Composable
 fun MusicListItem(
-    modifier: Modifier = Modifier,
     music: MusicFile,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     isFavorite: Boolean = false,
-    onClick: () -> Unit
 ) {
     Row(
-        modifier = modifier
-            .padding(horizontal = 16.dp, vertical = 6.dp)
-            .clickable { onClick() },
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+        modifier
+            .clickable { onClick() }
+            .padding(start = 20.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         AlbumCover(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .size(48.dp)
-                .clip(RoundedCornerShape(20.dp)),
-            cover = music.albumCover?.toImageBitmap()
+                .clip(RoundedCornerShape(8.dp)),
+            cover = music.albumCover?.toImageBitmap(),
         )
         Spacer(modifier = Modifier.width(16.dp))
         Column(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .height(48.dp)
                 .weight(1.0f),
-            verticalArrangement = Arrangement.SpaceAround
+            verticalArrangement = Arrangement.SpaceAround,
         ) {
             Text(
                 text = music.title,
                 style = MaterialTheme.typography.titleSmall,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
             Text(
                 text = music.artist,
                 style = MaterialTheme.typography.bodySmall,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         }
         IconButton(onClick = { }) {
             Icon(
-                painter = painterResource(
-                    id = if (isFavorite) {
+                painter =
+                painterResource(
+                    id =
+                    if (isFavorite) {
                         R.drawable.baseline_favorite_24
                     } else {
                         R.drawable.baseline_favorite_border_24
-                    }
+                    },
                 ),
-                contentDescription = "Favorite Icon Button"
+                contentDescription = "Favorite Icon Button",
             )
         }
         IconButton(onClick = { }) {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_more_vert_24),
-                contentDescription = "Favorite Icon Button"
+                contentDescription = "Favorite Icon Button",
             )
         }
     }
@@ -96,19 +101,20 @@ fun MusicListItem(
 private fun PreviewMusicListItem() {
     MaterialMusicPlayerTheme {
         Surface(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
-            val music = MusicFile(
-                id = 1000000033,
-                title = "2step (feat. Lil Baby)",
-                artist = "Ed Sheeran",
-                album = "2step (feat. Lil Baby)",
-                filePath = "/storage/emulated/0/Download/01 - 2 step (feat.Lil Baby).mp3",
-                dateAdded = "1696781534",
-                dateModified = "1696781534",
-                duration = "163500",
-                genre = "Pop",
-                year = "2022",
-                uri = Uri.EMPTY
-            )
+            val music =
+                MusicFile(
+                    id = 1000000033,
+                    title = "2step (feat. Lil Baby)",
+                    artist = "Ed Sheeran",
+                    album = "2step (feat. Lil Baby)",
+                    filePath = "/storage/emulated/0/Download/01 - 2 step (feat.Lil Baby).mp3",
+                    dateAdded = "1696781534",
+                    dateModified = "1696781534",
+                    duration = "163500",
+                    genre = "Pop",
+                    year = "2022",
+                    uri = Uri.EMPTY,
+                )
             MusicListItem(music = music, isFavorite = true, onClick = {})
         }
     }
@@ -119,21 +125,24 @@ private fun PreviewMusicListItem() {
 private fun PreviewLongNameMusicListItem() {
     MaterialMusicPlayerTheme {
         Surface(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
-            val music = MusicFile(
-                id = 1000000033,
-                title = "2step (feat. Lil Baby) 2step (feat. Lil Baby) 2step (feat. Lil Baby)" +
-                    " 2step (feat. Lil Baby) ",
-                artist = "Ed Sheeran Ed Sheeran Ed Sheeran Ed Sheeran Ed Sheeran Ed Sheeran " +
-                    "Ed Sheeran Ed Sheeran",
-                album = "2step (feat. Lil Baby)",
-                filePath = "/storage/emulated/0/Download/01 - 2 step (feat.Lil Baby).mp3",
-                dateAdded = "1696781534",
-                dateModified = "1696781534",
-                duration = "163500",
-                genre = "Pop",
-                year = "2022",
-                uri = Uri.EMPTY
-            )
+            val music =
+                MusicFile(
+                    id = 1000000033,
+                    title =
+                    "2step (feat. Lil Baby) 2step (feat. Lil Baby) 2step (feat. Lil Baby)" +
+                            " 2step (feat. Lil Baby) ",
+                    artist =
+                    "Ed Sheeran Ed Sheeran Ed Sheeran Ed Sheeran Ed Sheeran Ed Sheeran " +
+                            "Ed Sheeran Ed Sheeran",
+                    album = "2step (feat. Lil Baby)",
+                    filePath = "/storage/emulated/0/Download/01 - 2 step (feat.Lil Baby).mp3",
+                    dateAdded = "1696781534",
+                    dateModified = "1696781534",
+                    duration = "163500",
+                    genre = "Pop",
+                    year = "2022",
+                    uri = Uri.EMPTY,
+                )
             MusicListItem(music = music, isFavorite = true, onClick = {})
         }
     }

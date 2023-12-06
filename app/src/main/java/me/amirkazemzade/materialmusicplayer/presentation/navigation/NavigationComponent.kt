@@ -14,7 +14,7 @@ import org.koin.compose.koinInject
 @Composable
 fun NavigationComponent(
     navController: NavHostController,
-    navigator: Navigator = koinInject()
+    navigator: Navigator = koinInject(),
 ) {
     LaunchedEffect("navigation") {
         navigator.sharedFlow.onEach {
@@ -28,7 +28,7 @@ fun NavigationComponent(
     // Navigation Directions
     NavHost(
         navController = navController,
-        startDestination = NavTarget.Music.label
+        startDestination = NavTarget.Music.label,
     ) {
         composable(ModuleRoutes.MusicList.label) {
             MusicScreen()

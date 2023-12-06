@@ -9,31 +9,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import me.amirkazemzade.materialmusicplayer.R
 
 @Composable
 fun AlbumCover(
+    cover: ImageBitmap?,
     modifier: Modifier = Modifier,
-    cover: ImageBitmap?
 ) {
     if (cover != null) {
         Image(
             modifier = modifier,
             bitmap = cover,
-            contentDescription = stringResource(R.string.song_s_album_cover_image)
+            contentScale = ContentScale.FillBounds,
+            contentDescription = stringResource(R.string.song_s_album_cover_image),
         )
     } else {
         Box(
-            modifier = modifier
-                .background(MaterialTheme.colorScheme.inverseSurface),
-            contentAlignment = Alignment.Center
+            modifier = modifier.background(MaterialTheme.colorScheme.inverseSurface),
+            contentAlignment = Alignment.Center,
         ) {
             Icon(
-                painterResource(id = R.drawable.baseline_music_note_24),
+                painter = painterResource(id = R.drawable.baseline_music_note_24),
                 tint = MaterialTheme.colorScheme.inverseOnSurface,
-                contentDescription = stringResource(R.string.music_note_icon)
+                contentDescription = stringResource(R.string.music_note_icon),
             )
         }
     }

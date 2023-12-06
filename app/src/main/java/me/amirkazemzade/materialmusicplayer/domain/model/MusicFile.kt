@@ -1,7 +1,6 @@
 package me.amirkazemzade.materialmusicplayer.domain.model
 
 import android.net.Uri
-import android.provider.MediaStore
 
 data class MusicFile(
     val id: Long,
@@ -15,7 +14,7 @@ data class MusicFile(
     val genre: String? = null,
     val year: String? = null,
     val albumCover: ByteArray? = null,
-    val uri: Uri
+    val uri: Uri,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -41,16 +40,3 @@ data class MusicFile(
         return result
     }
 }
-
-val musicProjection = arrayOf(
-    MediaStore.Audio.Media._ID,
-    MediaStore.Audio.Media.TITLE,
-    MediaStore.Audio.Media.ARTIST,
-    MediaStore.Audio.Media.ALBUM,
-    MediaStore.Audio.Media.DATA,
-    MediaStore.Audio.Media.DATE_ADDED,
-    MediaStore.Audio.Media.DATE_MODIFIED,
-    MediaStore.Audio.Media.DURATION,
-    MediaStore.Audio.Media.GENRE,
-    MediaStore.Audio.Media.YEAR
-)

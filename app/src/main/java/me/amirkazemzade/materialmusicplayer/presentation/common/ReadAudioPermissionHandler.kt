@@ -1,5 +1,6 @@
 package me.amirkazemzade.materialmusicplayer.presentation.common
 
+import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,40 +27,54 @@ import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicP
 @Composable
 fun ReadAudioPermissionHandler(
     modifier: Modifier = Modifier,
-    content: @Composable (Modifier) -> Unit
+    content: @Composable (Modifier) -> Unit,
 ) {
-    val readAudioPermissionState = rememberPermissionState(
-        android.Manifest.permission.READ_MEDIA_AUDIO
-    )
+    val (requiredPermission, permissionRequestTextId) =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Pair(android.Manifest.permission.READ_MEDIA_AUDIO, R.string.audio_permission_request)
+        } else {
+            Pair(
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                R.string.storage_permission_request,
+            )
+        }
+    val readAudioPermissionState =
+        rememberPermissionState(
+            requiredPermission,
+        )
 
     if (readAudioPermissionState.status.isGranted) {
         content(modifier)
     } else {
         ReadAudioPermissionRequestPage(
             modifier = modifier,
-            onRequestPermission = { readAudioPermissionState.launchPermissionRequest() }
+            requestPermissionTextId = permissionRequestTextId,
+            onRequestPermission = { readAudioPermissionState.launchPermissionRequest() },
         )
     }
 }
 
 @Composable
 private fun ReadAudioPermissionRequestPage(
-    modifier: Modifier,
-    onRequestPermission: () -> Unit
+    requestPermissionTextId: Int,
+    onRequestPermission: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Scaffold {
+    Scaffold(modifier = modifier) { innerPadding ->
         Column(
-            modifier = modifier
+            modifier =
+            Modifier
+                .padding(innerPadding)
                 .fillMaxSize()
                 .padding(32.dp),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = stringResource(R.string.audio_permission_request),
-                textAlign = TextAlign.Center
+                text = stringResource(requestPermissionTextId),
+                textAlign = TextAlign.Center,
             )
-            Spacer(modifier = modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = onRequestPermission) {
                 Text(stringResource(R.string.request_permission))
             }
@@ -73,7 +88,20 @@ fun ReadAudioPermissionRequestPagePreview() {
     MaterialMusicPlayerTheme {
         ReadAudioPermissionRequestPage(
             modifier = Modifier,
-            onRequestPermission = {}
+            requestPermissionTextId = R.string.audio_permission_request,
+            onRequestPermission = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+fun ReadStoragePermissionRequestPagePreview() {
+    MaterialMusicPlayerTheme {
+        ReadAudioPermissionRequestPage(
+            modifier = Modifier,
+            requestPermissionTextId = R.string.storage_permission_request,
+            onRequestPermission = {},
         )
     }
 }
