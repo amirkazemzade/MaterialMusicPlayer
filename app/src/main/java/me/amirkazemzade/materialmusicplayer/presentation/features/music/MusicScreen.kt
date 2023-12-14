@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import me.amirkazemzade.materialmusicplayer.domain.model.Status
-import me.amirkazemzade.materialmusicplayer.presentation.common.FullScreenLoading
+import me.amirkazemzade.materialmusicplayer.presentation.common.components.FullScreenLoading
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.MusicList
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.PlayerBottomSheetScaffold
 import org.koin.compose.koinInject
@@ -13,9 +13,10 @@ import org.koin.compose.koinInject
 @Composable
 fun MusicScreen(
     modifier: Modifier = Modifier,
-    musicViewModel: MusicViewModel = koinInject(),
+    musicControllerViewModel: MusicControllerViewModel = koinInject(),
 ) {
-    val mediaControllerState = musicViewModel.mediaControllerState.collectAsStateWithLifecycle()
+    val mediaControllerState =
+        musicControllerViewModel.mediaControllerState.collectAsStateWithLifecycle()
     when (mediaControllerState.value) {
         is Status.Loading -> FullScreenLoading()
         is Status.Success -> {

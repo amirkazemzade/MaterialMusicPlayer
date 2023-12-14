@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "me.amirkazemzade.materialmusicplayer"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -42,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.4-dev-k1.9.20-Beta2-ac5f960bdaf"
+        kotlinCompilerExtensionVersion = "1.5.6"
     }
     packaging {
         resources {
@@ -69,6 +69,7 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.6")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
 
     // Compose
 
@@ -77,9 +78,11 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3-android:1.2.0-alpha12")
+    //noinspection GradleDependency
+    implementation("androidx.compose.material3:material3:1.2.0-alpha10")
     implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
     implementation("androidx.navigation:navigation-compose:2.7.5")
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
 
     // Lifecycle
 

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
-import me.amirkazemzade.materialmusicplayer.presentation.common.ReadAudioPermissionHandler
+import me.amirkazemzade.materialmusicplayer.presentation.common.components.ReadAudioPermissionHandler
 import me.amirkazemzade.materialmusicplayer.presentation.navigation.NavigationComponent
 import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicPlayerTheme
 import org.koin.androidx.compose.KoinAndroidContext

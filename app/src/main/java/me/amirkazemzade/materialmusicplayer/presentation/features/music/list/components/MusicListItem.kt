@@ -26,9 +26,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.amirkazemzade.materialmusicplayer.R
-import me.amirkazemzade.materialmusicplayer.common.toImageBitmap
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
-import me.amirkazemzade.materialmusicplayer.presentation.common.AlbumCover
+import me.amirkazemzade.materialmusicplayer.presentation.common.components.AlbumCover
+import me.amirkazemzade.materialmusicplayer.presentation.common.toImageBitmap
 import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicPlayerTheme
 
 @Composable

@@ -4,7 +4,7 @@ import me.amirkazemzade.materialmusicplayer.data.repository.MusicRepositoryImpl
 import me.amirkazemzade.materialmusicplayer.domain.repository.MusicRepository
 import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMediaControllerUseCase
 import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMusicListUseCase
-import me.amirkazemzade.materialmusicplayer.presentation.features.music.MusicViewModel
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.MusicControllerViewModel
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.MusicListViewModel
 import me.amirkazemzade.materialmusicplayer.presentation.navigation.Navigator
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -24,6 +24,6 @@ val appModule =
         singleOf(::GetMediaControllerUseCase)
 
         // ViewModels
-        viewModelOf(::MusicViewModel)
+        viewModelOf(::MusicControllerViewModel)
         viewModelOf(::MusicListViewModel)
     }

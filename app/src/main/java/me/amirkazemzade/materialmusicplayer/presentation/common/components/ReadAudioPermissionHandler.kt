@@ -1,4 +1,4 @@
-package me.amirkazemzade.materialmusicplayer.presentation.common
+package me.amirkazemzade.materialmusicplayer.presentation.common.components
 
 import android.os.Build
 import androidx.compose.foundation.layout.Arrangement

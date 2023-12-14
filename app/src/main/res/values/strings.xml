@@ -7,4 +7,11 @@
     <string name="pause">Pause</string>
     <string name="song_s_album_cover_image">Song\'s Album Cover Image</string>
     <string name="music_note_icon">Music Note Icon</string>
+    <string name="minimize_player">Minimize Player</string>
+    <string name="shuffle_is_on">Shuffle is on</string>
+    <string name="shuffle_is_off">Shuffle is off</string>
+    <string name="previous">previous</string>
+    <string name="next">Next</string>
+    <string name="is_not_favorite">Is not favorite</string>
+    <string name="is_favorite">Is favorite</string>
 </resources>

@@ -2,7 +2,6 @@ package me.amirkazemzade.materialmusicplayer.domain.usecase
 
 import android.app.Application
 import android.content.ComponentName
-import android.util.Log
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.MoreExecutors
@@ -23,7 +22,6 @@ class GetMediaControllerUseCase(private val app: Application) {
         val controllerFuture = MediaController.Builder(app, sessionToken).buildAsync()
         controllerFuture.addListener(
             {
-                Log.d("miniplayer", "invoke: ${controllerFuture.get()}")
                 mediaController.value = Status.Success(controllerFuture.get())
             },
             MoreExecutors.directExecutor(),

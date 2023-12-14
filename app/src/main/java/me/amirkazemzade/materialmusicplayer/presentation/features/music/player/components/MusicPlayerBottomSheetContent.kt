@@ -11,15 +11,18 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.media3.session.MediaController
 import kotlinx.coroutines.launch
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.MusicEvent
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.FullScreenPlayer
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.mini.MiniPlayer
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.states.PlayerState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MusicPlayerBottomSheetContent(
     state: SheetState,
-    playerState: PlayerState?,
-    mediaController: MediaController?,
+    playerState: PlayerState,
+    onEvent: (event: MusicEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
@@ -37,16 +40,19 @@ fun MusicPlayerBottomSheetContent(
     ) { currentValue ->
         if (currentValue == SheetValue.Expanded) {
             FullScreenPlayer(
-                modifier = Modifier,
                 playerState = playerState,
-                mediaController = mediaController,
+                onMinimize = { scope.launch { state.partialExpand() } },
+                onEvent = onEvent,
+                onFavoriteChange = { /* TODO: implement favorites */ },
+                onShuffleChange = { /* TODO: implement shuffle */ },
+                modifier = Modifier,
             )
         } else {
             MiniPlayer(
                 modifier = Modifier,
                 playerState = playerState,
-                mediaController = mediaController,
                 onExpand = { scope.launch { state.expand() } },
+                onEvent = onEvent,
             )
         }
     }
