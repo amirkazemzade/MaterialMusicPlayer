@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import me.amirkazemzade.materialmusicplayer.presentation.common.MusicTimelineGeneratorMock
 import me.amirkazemzade.materialmusicplayer.presentation.common.formatToMinutesAndSeconds
 import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicPlayerTheme
+import kotlin.math.max
 
 @Composable
 fun Timeline(
@@ -28,7 +29,6 @@ fun Timeline(
     onCurrentPositionChange: (value: Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
     val sliderPosition = rememberSaveable {
         mutableStateOf<Long?>(null)
     }
@@ -36,13 +36,14 @@ fun Timeline(
     if (currentPositionMs == null || durationMs == null) {
         LinearProgressIndicator()
     } else {
+        val durationMsNonNegative = max(durationMs, 0)
         Column(
             modifier = modifier.padding(horizontal = 10.dp),
         ) {
             val value = sliderPosition.value ?: currentPositionMs
             TimeSlider(
                 currentPosition = value.toFloat(),
-                duration = durationMs.toFloat(),
+                duration = durationMsNonNegative.toFloat(),
                 onValueChange = {
                     sliderPosition.value = it.toLong()
                 },
@@ -53,7 +54,7 @@ fun Timeline(
             )
             Timestamps(
                 sliderPosition = value,
-                duration = durationMs,
+                duration = durationMsNonNegative,
             )
         }
     }
