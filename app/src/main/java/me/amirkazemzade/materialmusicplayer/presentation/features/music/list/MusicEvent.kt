@@ -6,4 +6,5 @@ sealed class MusicEvent {
     data object Next : MusicEvent()
     data object Previous : MusicEvent()
     data class SeekTo(val positionMs: Long) : MusicEvent()
+    data class ShuffleChange(val shuffleEnable: Boolean) : MusicEvent()
 }

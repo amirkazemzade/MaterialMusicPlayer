@@ -18,10 +18,9 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.MediaMetadata
 import me.amirkazemzade.materialmusicplayer.presentation.common.MusicTimelineGeneratorMock
-import me.amirkazemzade.materialmusicplayer.presentation.common.toImageBitmap
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.MusicEvent
-import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components.Artwork
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components.BottomActionBar
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components.FullScreenAlbumCover
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components.PlayerControllers
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components.Timeline
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components.TitleAndArtist
@@ -35,7 +34,6 @@ fun FullScreenPlayer(
     onMinimize: () -> Unit,
     onEvent: (event: MusicEvent) -> Unit,
     onFavoriteChange: (value: Boolean) -> Unit,
-    onShuffleChange: (value: Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -63,11 +61,13 @@ fun FullScreenPlayer(
                 },
             )
             Spacer(modifier = Modifier.weight(2f))
-            Artwork(image = mediaMetadata.artworkData?.toImageBitmap())
+            FullScreenAlbumCover(
+                artworkData = mediaMetadata.artworkData,
+            )
             Spacer(modifier = Modifier.weight(2f))
             TitleAndArtist(
-                title = mediaMetadata.title?.toString() ?: "",
-                artist = mediaMetadata.artist?.toString() ?: "",
+                title = mediaMetadata.title?.toString(),
+                artist = mediaMetadata.artist?.toString(),
             )
             Spacer(modifier = Modifier.weight(1f))
             Timeline(
@@ -76,10 +76,11 @@ fun FullScreenPlayer(
                 onCurrentPositionChange = { positionMs -> onEvent(MusicEvent.SeekTo(positionMs)) },
             )
             PlayerControllers(
-                shuffleActive = false,
+                shuffleActive = playerState.shuffleModeEnabled,
                 isFavorite = false,
                 isPlaying = playerState.isPlaying,
-                onShuffleChange = onShuffleChange,
+                canSkipToNext = playerState.canSkipToNext,
+                onShuffleChange = { onEvent(MusicEvent.ShuffleChange(it)) },
                 onFavoriteChange = onFavoriteChange,
                 onPlay = { onEvent(MusicEvent.Play) },
                 onPause = { onEvent(MusicEvent.Pause) },
@@ -122,7 +123,6 @@ fun FullScreenPlayerPreview() {
                     duration = timelineMock.duration,
                 ),
                 onMinimize = {},
-                onShuffleChange = {},
                 onFavoriteChange = {},
                 onEvent = { event ->
                     when (event) {
@@ -145,6 +145,8 @@ fun FullScreenPlayerPreview() {
                         is MusicEvent.SeekTo -> {
                             timelineMock.setPosition(event.positionMs)
                         }
+
+                        else -> {}
                     }
                 },
                 modifier = Modifier.padding(it),

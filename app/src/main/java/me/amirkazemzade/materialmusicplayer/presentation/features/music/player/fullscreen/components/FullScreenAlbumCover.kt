@@ -7,21 +7,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
-import me.amirkazemzade.materialmusicplayer.presentation.common.components.AlbumCover
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.components.AnimatedAlbumCover
 
 @Composable
-fun Artwork(
-    image: ImageBitmap?,
+fun FullScreenAlbumCover(
+    artworkData: ByteArray?,
     modifier: Modifier = Modifier,
 ) {
-    AlbumCover(
+    AnimatedAlbumCover(
         modifier = modifier
             .padding(16.dp)
             .fillMaxWidth()
             .aspectRatio(1f)
             .clip(RoundedCornerShape(20.dp)),
-        cover = image,
+        artworkData = artworkData,
     )
 }

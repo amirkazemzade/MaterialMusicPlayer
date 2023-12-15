@@ -18,7 +18,6 @@ fun Cursor.toMusicFile(): MusicFile {
     mediaMetadataRetriever.setDataSource(filePath)
     val albumCoverImage = mediaMetadataRetriever.embeddedPicture
     mediaMetadataRetriever.release()
-
     return MusicFile(
         id = id,
         title =

@@ -34,15 +34,19 @@ fun MiniPlayer(
         if (playerState.mediaMetadata == null) {
             CircularProgressIndicator()
         } else {
-            MiniAlbumCover(playerState = playerState)
+            MiniAlbumCover(
+                artworkData = playerState.mediaMetadata.artworkData,
+                isLoading = playerState.isLoading,
+            )
             Spacer(modifier = Modifier.width(16.dp))
             MiniTitleAndArtist(
                 modifier = Modifier.weight(1f),
-                playerState = playerState,
+                metaData = playerState.mediaMetadata,
             )
             Spacer(modifier = Modifier.width(8.dp))
             MiniControllers(
-                playerState = playerState,
+                isPlaying = playerState.isPlaying,
+                canSkipToNext = playerState.canSkipToNext,
                 onPlay = { onEvent(MusicEvent.Play) },
                 onPause = { onEvent(MusicEvent.Pause) },
                 onPrevious = { onEvent(MusicEvent.Previous) },

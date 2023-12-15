@@ -16,24 +16,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.states.PlayerState
+import androidx.media3.common.MediaMetadata
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MiniTitleAndArtist(
-    playerState: PlayerState,
+    metaData: MediaMetadata?,
     modifier: Modifier = Modifier,
 ) {
     AnimatedContent(
         modifier = modifier,
-        targetState = playerState.mediaMetadata,
+        targetState = metaData,
         transitionSpec = {
             slideInHorizontally(
                 initialOffsetX = { -200 },
                 animationSpec = tween(durationMillis = 500),
             ) togetherWith slideOutHorizontally(animationSpec = tween(500))
         },
-        label = "title_artist_text_conversion",
+        label = "mini_title_artist_text_conversion",
     ) { mediaMetadata ->
         Column(
             modifier = Modifier.height(50.dp),

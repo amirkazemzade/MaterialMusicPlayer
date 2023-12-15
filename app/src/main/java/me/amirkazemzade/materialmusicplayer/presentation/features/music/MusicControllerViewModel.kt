@@ -25,6 +25,7 @@ class MusicControllerViewModel(
             MusicEvent.Next -> onNext()
             MusicEvent.Previous -> onPrevious()
             is MusicEvent.SeekTo -> onSeekTo(event.positionMs)
+            is MusicEvent.ShuffleChange -> onShuffleChange(event.shuffleEnable)
         }
     }
 
@@ -51,5 +52,10 @@ class MusicControllerViewModel(
     private fun onSeekTo(positionMs: Long) {
         if (mediaController?.isCommandAvailable(Player.COMMAND_SEEK_IN_CURRENT_MEDIA_ITEM) == true)
             mediaController?.seekTo(positionMs)
+    }
+
+    private fun onShuffleChange(shuffleEnable: Boolean) {
+        if (mediaController?.isCommandAvailable(Player.COMMAND_SET_SHUFFLE_MODE) == true)
+            mediaController?.shuffleModeEnabled = shuffleEnable
     }
 }

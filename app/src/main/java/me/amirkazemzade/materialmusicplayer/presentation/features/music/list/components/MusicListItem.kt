@@ -12,6 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -21,11 +25,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import me.amirkazemzade.materialmusicplayer.R
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import me.amirkazemzade.materialmusicplayer.presentation.common.components.AlbumCover
 import me.amirkazemzade.materialmusicplayer.presentation.common.toImageBitmap
@@ -75,21 +77,13 @@ fun MusicListItem(
         }
         IconButton(onClick = { }) {
             Icon(
-                painter =
-                painterResource(
-                    id =
-                    if (isFavorite) {
-                        R.drawable.baseline_favorite_24
-                    } else {
-                        R.drawable.baseline_favorite_border_24
-                    },
-                ),
+                imageVector = if (isFavorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
                 contentDescription = "Favorite Icon Button",
             )
         }
         IconButton(onClick = { }) {
             Icon(
-                painter = painterResource(id = R.drawable.baseline_more_vert_24),
+                imageVector = Icons.Rounded.MoreVert,
                 contentDescription = "Favorite Icon Button",
             )
         }

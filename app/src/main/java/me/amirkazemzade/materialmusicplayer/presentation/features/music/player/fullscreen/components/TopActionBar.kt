@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.rounded.ExpandMore
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,7 +36,7 @@ fun TopActionBar(
     ) {
         IconButton(onClick = onMinimize) {
             Icon(
-                imageVector = Icons.Default.ExpandMore,
+                imageVector = Icons.Rounded.ExpandMore,
                 contentDescription = stringResource(R.string.minimize_player)
             )
         }
@@ -45,7 +45,7 @@ fun TopActionBar(
 
         IconButton(onClick = onMoreOptions) {
             Icon(
-                imageVector = Icons.Default.MoreVert, contentDescription = "More Options"
+                imageVector = Icons.Rounded.MoreVert, contentDescription = "More Options"
             )
         }
     }

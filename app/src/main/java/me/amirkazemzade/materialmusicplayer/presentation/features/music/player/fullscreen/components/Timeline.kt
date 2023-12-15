@@ -1,6 +1,7 @@
 package me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,13 +35,27 @@ fun Timeline(
         mutableStateOf<Long?>(null)
     }
 
-    if (currentPositionMs == null || durationMs == null) {
-        LinearProgressIndicator()
-    } else {
-        val durationMsNonNegative = max(durationMs, 0)
-        Column(
-            modifier = modifier.padding(horizontal = 10.dp),
-        ) {
+    Column(
+        modifier = modifier.padding(horizontal = 10.dp),
+    ) {
+        if (currentPositionMs == null || durationMs == null) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(20.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                LinearProgressIndicator(
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+            Timestamps(
+                sliderPosition = 0,
+                duration = 0,
+            )
+        } else {
+            val durationMsNonNegative = max(durationMs, 0)
+
             val value = sliderPosition.value ?: currentPositionMs
             TimeSlider(
                 currentPosition = value.toFloat(),
@@ -69,7 +85,9 @@ private fun TimeSlider(
     modifier: Modifier = Modifier,
 ) {
     Slider(
-        modifier = modifier.fillMaxWidth().height(20.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(20.dp),
         value = currentPosition,
         valueRange = 0f..duration,
         onValueChange = onValueChange,
@@ -83,7 +101,9 @@ private fun Timestamps(
     duration: Long,
 ) {
     Row(
-        modifier = Modifier.padding(horizontal = 6.dp).fillMaxWidth(),
+        modifier = Modifier
+            .padding(horizontal = 6.dp)
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
 

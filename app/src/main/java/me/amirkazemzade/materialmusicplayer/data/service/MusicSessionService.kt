@@ -21,7 +21,6 @@ class MusicSessionService : MediaSessionService() {
         }
     }
 
-    // Remember to release the player and media session in onDestroy
     override fun onDestroy() {
         mediaSession?.run {
             player.release()
