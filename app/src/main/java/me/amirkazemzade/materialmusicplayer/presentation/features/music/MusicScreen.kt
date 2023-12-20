@@ -1,6 +1,5 @@
 package me.amirkazemzade.materialmusicplayer.presentation.features.music
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -22,9 +21,10 @@ fun MusicScreen(
         is Status.Success -> {
             PlayerBottomSheetScaffold(
                 modifier = modifier,
-            ) { innerPadding ->
+            ) { innerPadding, contentModifier ->
                 MusicList(
-                    modifier = Modifier.padding(innerPadding),
+                    contentPadding = innerPadding,
+                    modifier = contentModifier,
                 )
             }
         }

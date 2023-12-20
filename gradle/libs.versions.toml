@@ -6,6 +6,7 @@ composeBom = "2023.10.01"
 composeUi = "1.6.0-beta03"
 detekt = "1.23.4"
 espressoCore = "3.5.1"
+haze = "0.4.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 ktx = "1.12.0"
@@ -24,6 +25,8 @@ media3Exoplayer = "1.2.0"
 navigationCompose = "2.7.6"
 sentry = "4.0.0"
 twitterDetekt = "0.0.26"
+paletteKtx = "1.0.0"
+material = "1.11.0"
 
 [libraries]
 
@@ -61,6 +64,8 @@ androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifec
 # material
 androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-palette-ktx = { group = "androidx.palette", name = "palette-ktx", version.ref = "paletteKtx" }
 
 # media3
 androidx-media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3Exoplayer" }
@@ -70,6 +75,9 @@ androidx-media3-session = { group = "androidx.media3", name = "media3-session", 
 
 # navigation
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+
+# haze
+chrisbanes-haze-jetpack-compose = { group = "dev.chrisbanes.haze", name = "haze-jetpack-compose", version.ref = "haze" }
 
 # detekt
 twitterDetektPlugin = { module = "com.twitter.compose.rules:detekt", version.ref = "twitterDetekt" }

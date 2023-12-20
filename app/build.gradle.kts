@@ -82,6 +82,10 @@ dependencies {
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.palette.ktx)
+    implementation(libs.material)
+
+    implementation(libs.chrisbanes.haze.jetpack.compose)
 
     // Lifecycle
 

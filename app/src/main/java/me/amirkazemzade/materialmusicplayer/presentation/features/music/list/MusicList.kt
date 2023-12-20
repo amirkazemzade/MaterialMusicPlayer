@@ -1,6 +1,7 @@
 package me.amirkazemzade.materialmusicplayer.presentation.features.music.list
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -15,6 +16,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MusicList(
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     viewModel: MusicListViewModel = koinViewModel(),
 ) {
@@ -32,6 +34,7 @@ fun MusicList(
                     NoMusicFound()
                 } else {
                     MusicListContent(
+                        contentPadding = contentPadding,
                         musics = musicListState.data.toImmutableList(),
                         onItemClick = { index ->
                             if (mediaControllerState.value is Status.Success) {

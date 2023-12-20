@@ -2,6 +2,7 @@ package me.amirkazemzade.materialmusicplayer.presentation.features.music
 
 import androidx.lifecycle.ViewModel
 import androidx.media3.common.Player
+import androidx.media3.common.util.Util
 import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMediaControllerUseCase
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.MusicEvent
 
@@ -30,13 +31,11 @@ class MusicControllerViewModel(
     }
 
     private fun onPlay() {
-        if (mediaController?.isCommandAvailable(Player.COMMAND_PLAY_PAUSE) == true)
-            mediaController?.play()
+        Util.handlePlayButtonAction(mediaController)
     }
 
     private fun onPause() {
-        if (mediaController?.isCommandAvailable(Player.COMMAND_PLAY_PAUSE) == true)
-            mediaController?.pause()
+        Util.handlePauseButtonAction(mediaController)
     }
 
     private fun onNext() {

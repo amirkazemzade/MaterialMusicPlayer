@@ -2,6 +2,7 @@ package me.amirkazemzade.materialmusicplayer.presentation.features.music.player.
 
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
+import androidx.media3.common.util.Util
 
 data class PlayerState(
     val isAvailable: Boolean,
@@ -25,7 +26,7 @@ data class PlayerState(
             return PlayerState(
                 isAvailable = isAvailable,
                 isLoading = player?.isLoading ?: false,
-                isPlaying = player?.isPlaying ?: false,
+                isPlaying = !Util.shouldShowPlayButton(player),
                 canSkipToNext = player?.hasNextMediaItem() ?: false,
                 playbackState = player?.playbackState,
                 mediaMetadata = mediaMetadata,

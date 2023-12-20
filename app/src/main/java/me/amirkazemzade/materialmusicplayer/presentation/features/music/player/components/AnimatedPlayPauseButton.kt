@@ -1,11 +1,12 @@
 package me.amirkazemzade.materialmusicplayer.presentation.features.music.player.components
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,7 +23,7 @@ fun AnimatedPlayPauseButton(
     modifier: Modifier = Modifier,
     iconModifier: Modifier = Modifier,
 ) {
-    FilledIconButton(
+    FilledTonalIconButton(
         modifier = modifier,
         shape = RoundedCornerShape(playPauseButtonCornerRadius),
         onClick = {
@@ -36,6 +37,9 @@ fun AnimatedPlayPauseButton(
         Crossfade(
             targetState = isPlaying,
             label = "play_pause_icon_conversion",
+            animationSpec = tween(
+                durationMillis = 100
+            )
         ) { isPlaying ->
             Icon(
                 modifier = iconModifier,

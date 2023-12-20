@@ -1,6 +1,7 @@
 package me.amirkazemzade.materialmusicplayer.presentation.features.music.list.components
 
 import android.net.Uri
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,14 +18,16 @@ import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicP
 
 @Composable
 fun MusicListContent(
+    contentPadding: PaddingValues,
     musics: ImmutableList<MusicFile>,
     onItemClick: (index: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
+        contentPadding = contentPadding
     ) {
-        itemsIndexed(musics) { index, music ->
+        itemsIndexed(musics, key = { _, item -> item.id }) { index, music ->
             MusicListItem(
                 modifier = Modifier.fillMaxWidth(),
                 music = music,
@@ -93,6 +96,7 @@ private fun PreviewMusicList() {
     MaterialMusicPlayerTheme {
         Scaffold {
             MusicListContent(
+                contentPadding = PaddingValues(),
                 modifier = Modifier.padding(it),
                 musics = musicList,
                 onItemClick = {},

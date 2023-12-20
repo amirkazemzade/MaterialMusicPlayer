@@ -1,5 +1,6 @@
 package me.amirkazemzade.materialmusicplayer.presentation.common
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
@@ -12,10 +13,9 @@ fun <T> Iterable<T>.reorder(index: Int): List<T> {
     return startingElements + endingElements
 }
 
-fun ByteArray.toImageBitmap(): ImageBitmap =
-    BitmapFactory
-        .decodeByteArray(this, 0, this.size)
-        .asImageBitmap()
+fun ByteArray.toImageBitmap(): ImageBitmap = toBitmap().asImageBitmap()
+
+fun ByteArray.toBitmap(): Bitmap = BitmapFactory.decodeByteArray(this, 0, this.size)
 
 fun Long.formatToMinutesAndSeconds(): String {
     return milliseconds.toComponents(
