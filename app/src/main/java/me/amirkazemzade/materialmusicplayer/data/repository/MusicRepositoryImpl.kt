@@ -3,6 +3,7 @@ package me.amirkazemzade.materialmusicplayer.data.repository
 import android.content.Context
 import android.os.Build
 import android.provider.MediaStore
+import io.sentry.Sentry
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -56,7 +57,12 @@ class MusicRepositoryImpl(
 
                 // Iterate over the cursor and add each music file to the list.
                 do {
-                    musicFiles.add(cursor.toMusicFile())
+                    try {
+                        musicFiles.add(cursor.toMusicFile())
+                    } catch (e: Exception) {
+                        Sentry.captureException(e)
+                        Sentry.captureMessage("$cursor")
+                    }
                 } while (cursor.moveToNext())
 
                 // Close the cursor.

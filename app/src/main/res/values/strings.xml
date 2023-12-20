@@ -14,4 +14,5 @@
     <string name="next">Next</string>
     <string name="is_not_favorite">Is not favorite</string>
     <string name="is_favorite">Is favorite</string>
+    <string name="unknown">Unknown</string>
 </resources>

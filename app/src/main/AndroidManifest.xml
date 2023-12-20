@@ -26,6 +26,31 @@
         android:theme="@style/Theme.MaterialMusicPlayer"
         tools:targetApi="34">
 
+        <!-- Sentry -->
+        <meta-data
+            android:name="io.sentry.dsn"
+            android:value="https://06f66ee6da9c98838678e98e89db0c8a@o1146657.ingest.sentry.io/4506400090882049" />
+        <!-- enable automatic breadcrumbs for user interactions (clicks, swipes, scrolls) -->
+        <meta-data
+            android:name="io.sentry.traces.user-interaction.enable"
+            android:value="true" />
+        <!-- enable screenshot for crashes -->
+        <meta-data
+            android:name="io.sentry.attach-screenshot"
+            android:value="true" />
+        <!-- enable view hierarchy for crashes -->
+        <meta-data
+            android:name="io.sentry.attach-view-hierarchy"
+            android:value="true" />
+        <!-- enable the performance API by setting a sample-rate, adjust in production env -->
+        <meta-data
+            android:name="io.sentry.traces.sample-rate"
+            android:value="1.0" />
+        <!-- enable profiling when starting transactions, adjust in production env -->
+        <meta-data
+            android:name="io.sentry.traces.profiling.sample-rate"
+            android:value="1.0" />
+
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true"

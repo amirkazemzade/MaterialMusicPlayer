@@ -18,31 +18,32 @@ fun Cursor.toMusicFile(): MusicFile {
     mediaMetadataRetriever.setDataSource(filePath)
     val albumCoverImage = mediaMetadataRetriever.embeddedPicture
     mediaMetadataRetriever.release()
+
     return MusicFile(
         id = id,
         title =
-        getString(
+        getStringOrNull(
             getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE),
         ),
         artist =
-        getString(
+        getStringOrNull(
             getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST),
         ),
         album =
-        getString(
+        getStringOrNull(
             getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM),
         ),
         filePath = filePath,
         dateAdded =
-        getString(
+        getStringOrNull(
             getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED),
         ),
         dateModified =
-        getString(
+        getStringOrNull(
             getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED),
         ),
         duration =
-        getString(
+        getStringOrNull(
             getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION),
         ),
         genre =
@@ -55,7 +56,7 @@ fun Cursor.toMusicFile(): MusicFile {
         getStringOrNull(
             getColumnIndex(MediaStore.Audio.Media.YEAR),
         ),
-        albumCover = albumCoverImage,
+        artwork = albumCoverImage,
         uri =
         ContentUris.withAppendedId(
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,

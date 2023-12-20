@@ -4,16 +4,16 @@ import android.net.Uri
 
 data class MusicFile(
     val id: Long,
-    val title: String,
-    val artist: String,
-    val album: String,
+    val title: String?,
+    val artist: String?,
+    val album: String?,
     val filePath: String,
-    val dateAdded: String,
-    val dateModified: String,
-    val duration: String,
+    val dateAdded: String?,
+    val dateModified: String?,
+    val duration: String?,
     val genre: String? = null,
     val year: String? = null,
-    val albumCover: ByteArray? = null,
+    val artwork: ByteArray? = null,
     val uri: Uri,
 ) {
     override fun equals(other: Any?): Boolean {
@@ -36,7 +36,7 @@ data class MusicFile(
         result = 31 * result + duration.hashCode()
         result = 31 * result + (genre?.hashCode() ?: 0)
         result = 31 * result + (year?.hashCode() ?: 0)
-        result = 31 * result + (albumCover?.contentHashCode() ?: 0)
+        result = 31 * result + (artwork?.contentHashCode() ?: 0)
         return result
     }
 }

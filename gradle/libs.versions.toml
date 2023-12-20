@@ -1,8 +1,9 @@
 [versions]
 accompanistPermissions = "0.33.2-alpha"
-activityCompose = "1.8.1"
+activityCompose = "1.8.2"
 agp = "8.2.0"
 composeBom = "2023.10.01"
+composeUi = "1.6.0-beta03"
 detekt = "1.23.4"
 espressoCore = "3.5.1"
 junit = "4.13.2"
@@ -20,7 +21,8 @@ material3 = "1.2.0-alpha10"
 materialIconsExtended = "1.5.4"
 media3Ui = "1.2.0"
 media3Exoplayer = "1.2.0"
-navigationCompose = "2.7.5"
+navigationCompose = "2.7.6"
+sentry = "4.0.0"
 twitterDetekt = "0.0.26"
 
 [libraries]
@@ -34,7 +36,8 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 # compose
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "composeUi" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "composeUi" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 
@@ -87,9 +90,9 @@ kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime",
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 
-
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 googleDevtoolsKsp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 arturboschDetekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+sentry = { id = "io.sentry.android.gradle", version.ref = "sentry" }

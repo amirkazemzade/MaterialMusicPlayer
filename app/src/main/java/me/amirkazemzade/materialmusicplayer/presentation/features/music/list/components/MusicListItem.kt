@@ -25,9 +25,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import me.amirkazemzade.materialmusicplayer.R
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import me.amirkazemzade.materialmusicplayer.presentation.common.components.AlbumCover
 import me.amirkazemzade.materialmusicplayer.presentation.common.toImageBitmap
@@ -52,7 +54,7 @@ fun MusicListItem(
             Modifier
                 .size(48.dp)
                 .clip(RoundedCornerShape(8.dp)),
-            cover = music.albumCover?.toImageBitmap(),
+            cover = music.artwork?.toImageBitmap(),
         )
         Spacer(modifier = Modifier.width(16.dp))
         Column(
@@ -63,25 +65,29 @@ fun MusicListItem(
             verticalArrangement = Arrangement.SpaceAround,
         ) {
             Text(
-                text = music.title,
+                text = music.title ?: stringResource(R.string.unknown),
                 style = MaterialTheme.typography.titleSmall,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
-                text = music.artist,
+                text = music.artist ?: stringResource(R.string.unknown),
                 style = MaterialTheme.typography.bodySmall,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
         }
-        IconButton(onClick = { }) {
+        IconButton(onClick = {
+            // TODO: implement favorite
+        }) {
             Icon(
                 imageVector = if (isFavorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
                 contentDescription = "Favorite Icon Button",
             )
         }
-        IconButton(onClick = { }) {
+        IconButton(onClick = {
+            // TODO: implement more options
+        }) {
             Icon(
                 imageVector = Icons.Rounded.MoreVert,
                 contentDescription = "Favorite Icon Button",
