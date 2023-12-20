@@ -1,7 +1,7 @@
 package me.amirkazemzade.materialmusicplayer
 
 import android.app.Application
-import me.amirkazemzade.materialmusicplayer.data.remote.dto.appModule
+import me.amirkazemzade.materialmusicplayer.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

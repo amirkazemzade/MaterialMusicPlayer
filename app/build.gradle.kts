@@ -1,8 +1,9 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
-    id("org.jlleitschuh.gradle.ktlint") version "11.6.0"
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.googleDevtoolsKsp)
+    alias(libs.plugins.arturboschDetekt)
+    alias(libs.plugins.sentry)
 }
 
 android {
@@ -11,10 +12,10 @@ android {
 
     defaultConfig {
         applicationId = "me.amirkazemzade.materialmusicplayer"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -27,8 +28,9 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -42,7 +44,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.6"
     }
     packaging {
         resources {
@@ -51,61 +53,85 @@ android {
     }
 }
 
+detekt {
+    parallel = true
+    dependencies {
+        detektPlugins(libs.twitterDetektPlugin)
+    }
+    config.setFrom("src/main/java/me/amirkazemzade/materialmusicplayer/presentation/config/detekt/detekt.yml")
+}
+
 dependencies {
-    val lifecycleVersion = "2.6.2"
-    val ktorVersion = "2.3.5"
-    val koinAndroidVersion = "3.5.0"
 
-    // / Core
+    // Core
 
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.kotlinx.datetime)
 
-    // / Compose
+    // Compose
 
-    implementation("androidx.activity:activity-compose:1.8.0")
-    implementation(platform("androidx.compose:compose-bom:2023.09.02"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    //noinspection GradleDependency
+    implementation(libs.androidx.material3)
+    implementation(libs.accompanist.permissions)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.palette.ktx)
+    implementation(libs.material)
 
-    // / Lifecycle
+    implementation(libs.chrisbanes.haze.jetpack.compose)
+
+    // Lifecycle
 
     // Lifecycle utilities for Compose
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
+    implementation(libs.androidx.lifecycle.runtime.compose)
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     // ViewModel utilities for Compose
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     // Lifecycles only (without ViewModel or LiveData)
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     // Lifecycle utilities for Compose
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
-    // / API
+    // Player
+
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
+    implementation(libs.androidx.media3.common)
+    implementation(libs.androidx.media3.session)
+
+    // API
 
     // Ktor
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
 
-    // / DI
+    // DI
 
     // Koin
-    implementation("io.insert-koin:koin-androidx-compose:$koinAndroidVersion")
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
     // Navigation Graph
-    implementation("io.insert-koin:koin-androidx-compose-navigation:$koinAndroidVersion")
+    implementation(libs.koin.androidx.compose.navigation)
 
-    // / Test
+    // Test
 
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(libs.junit)
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.09.02"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
-    // / Debug
+    // Debug
 
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
