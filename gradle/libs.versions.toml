@@ -19,14 +19,15 @@ ktor = "2.3.6"
 lifecycle = "2.6.2"
 #noinspection GradleDependency
 material3 = "1.2.0-alpha10"
+material = "1.11.0"
 materialIconsExtended = "1.5.4"
 media3Ui = "1.2.0"
 media3Exoplayer = "1.2.0"
 navigationCompose = "2.7.6"
+paletteKtx = "1.0.0"
+room = "2.6.1"
 sentry = "4.0.0"
 twitterDetekt = "0.0.26"
-paletteKtx = "1.0.0"
-material = "1.11.0"
 
 [libraries]
 
@@ -54,6 +55,12 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 # androidx-test
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+
+# room
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 
 # lifecycle
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }

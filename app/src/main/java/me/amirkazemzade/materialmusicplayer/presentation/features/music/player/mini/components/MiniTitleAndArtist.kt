@@ -14,9 +14,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.MediaMetadata
+import me.amirkazemzade.materialmusicplayer.R
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -41,14 +43,14 @@ fun MiniTitleAndArtist(
         ) {
             Text(
                 modifier = Modifier.basicMarquee(),
-                text = mediaMetadata?.title?.toString() ?: "",
+                text = mediaMetadata?.title?.toString() ?: stringResource(id = R.string.unknown),
                 style = MaterialTheme.typography.titleMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
                 modifier = Modifier.basicMarquee(),
-                text = mediaMetadata?.artist?.toString() ?: "",
+                text = mediaMetadata?.artist?.toString() ?: stringResource(id = R.string.unknown),
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

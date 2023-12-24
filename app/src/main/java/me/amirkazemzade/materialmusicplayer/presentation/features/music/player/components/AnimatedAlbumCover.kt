@@ -8,7 +8,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import me.amirkazemzade.materialmusicplayer.presentation.common.components.AlbumCover
-import me.amirkazemzade.materialmusicplayer.presentation.common.toImageBitmap
+import me.amirkazemzade.materialmusicplayer.presentation.common.extensions.toImageBitmap
 
 @Composable
 fun AnimatedAlbumCover(

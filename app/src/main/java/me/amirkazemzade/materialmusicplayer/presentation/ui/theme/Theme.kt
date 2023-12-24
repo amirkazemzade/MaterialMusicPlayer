@@ -9,14 +9,12 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.google.android.material.color.utilities.Scheme
 
@@ -62,8 +60,23 @@ fun MaterialMusicPlayerTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.background.toArgb()
-            window.navigationBarColor = colorScheme.surfaceColorAtElevation(3.dp).toArgb()
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//                window.setDecorFitsSystemWindows(false)
+//                ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
+//                    val insets = windowInsets.getInsets(
+//                        WindowInsetsCompat.Type.systemGestures()
+//                    )
+//                    view.updatePadding(
+//                        insets.left,
+//                        insets.top,
+//                        insets.right,
+//                        insets.bottom
+//                    )
+//                    WindowInsetsCompat.CONSUMED
+//                }
+//            }
+//            window.statusBarColor = Color.Transparent.toArgb()
+//            window.navigationBarColor = Color.Transparent.toArgb()
             val insetsController = WindowCompat.getInsetsController(window, view)
             insetsController.isAppearanceLightStatusBars = !darkTheme
             insetsController.isAppearanceLightNavigationBars = !darkTheme

@@ -113,6 +113,12 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
 
+    // Database
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
     // DI
 
     // Koin
@@ -124,6 +130,7 @@ dependencies {
     // Test
 
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.room.testing)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

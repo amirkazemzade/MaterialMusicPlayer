@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.MediaMetadata
 import me.amirkazemzade.materialmusicplayer.presentation.common.MusicTimelineGeneratorMock
-import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.MusicEvent
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.MusicEvent
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components.BottomActionBar
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components.FullScreenAlbumCover
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components.PlayerControllers
@@ -48,7 +48,6 @@ fun FullScreenPlayer(
         Column(
             modifier = modifier
                 .padding(horizontal = 14.dp)
-                .padding(vertical = 16.dp)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

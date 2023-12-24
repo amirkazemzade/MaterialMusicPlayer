@@ -9,7 +9,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.MusicControllerViewModel
-import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.MusicEvent
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.MusicEvent
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.states.PlayerState
 import org.koin.compose.koinInject
 
