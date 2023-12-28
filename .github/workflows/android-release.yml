@@ -10,6 +10,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - name: set up JDK 17
@@ -18,14 +21,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
-          cache-dependency-path: |
-            **/*.gradle*
-            **/gradle-wrapper.properties
-            buildSrc/**/Versions.kt
-            buildSrc/**/Dependencies.kt
-            gradle/*.versions.toml
-            **/versions.properties
-            ./app/build
 
       #1
       - name: Grant execute permission for gradlew
