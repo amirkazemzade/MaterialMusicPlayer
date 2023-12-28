@@ -11,9 +11,11 @@ import android.os.Build
 import android.provider.MediaStore
 import android.util.Size
 import androidx.core.database.getStringOrNull
+import me.amirkazemzade.materialmusicplayer.data.db.entity.MusicFileEntity
 import me.amirkazemzade.materialmusicplayer.data.extensions.toBitmap
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import java.io.IOException
+
 
 fun Cursor.toMusicFile(
     context: Context,
@@ -72,3 +74,33 @@ private fun thumbnailExtractor(
         null
     }
 }
+
+fun MusicFileEntity.toMusicFile() = MusicFile(
+    id = id,
+    title = title,
+    artist = artist,
+    album = album,
+    filePath = filePath,
+    dateAdded = dateAdded,
+    dateModified = dateModified,
+    duration = duration,
+    genre = genre,
+    year = year,
+    artwork = artworkThumbnail,
+    uri = uri,
+)
+
+fun MusicFile.toMusicFileEntity() = MusicFileEntity(
+    id = id,
+    title = title,
+    artist = artist,
+    album = album,
+    filePath = filePath,
+    dateAdded = dateAdded,
+    dateModified = dateModified,
+    duration = duration,
+    genre = genre,
+    year = year,
+    artworkThumbnail = artwork,
+    uri = uri,
+)

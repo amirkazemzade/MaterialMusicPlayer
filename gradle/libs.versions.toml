@@ -111,3 +111,4 @@ jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "k
 googleDevtoolsKsp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 arturboschDetekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 sentry = { id = "io.sentry.android.gradle", version.ref = "sentry" }
+room = { id = "androidx.room", version.ref = "room" }

@@ -32,7 +32,9 @@ class MusicListViewModel(
     private val _musicListState =
         combine(_refresh, _sortType, _sortOrder) { _, sortType, sortOrder ->
             getMusicListUseCase(sortType, sortOrder)
-        }.flatMapLatest { it }
+        }
+            .flatMapLatest { it }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), StatusCore.Loading())
 
     private val _state = MutableStateFlow<MusicListState>(MusicListState.Loading())
     val state = combine(

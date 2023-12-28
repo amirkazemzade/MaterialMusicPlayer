@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.googleDevtoolsKsp)
     alias(libs.plugins.arturboschDetekt)
     alias(libs.plugins.sentry)
+    alias(libs.plugins.room)
 }
 
 android {
@@ -51,6 +52,10 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+room {
+    schemaDirectory("src/main/java/me/amirkazemzade/materialmusicplayer/data/db/schemas")
 }
 
 detekt {

@@ -12,10 +12,10 @@ data class MusicFile(
     val dateAdded: String?,
     val dateModified: String?,
     val duration: String?,
+    val uri: Uri,
     val genre: String? = null,
     val year: String? = null,
     val artwork: Bitmap? = null,
-    val uri: Uri,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
