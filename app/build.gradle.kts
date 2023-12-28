@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.googleDevtoolsKsp)
     alias(libs.plugins.arturboschDetekt)
     alias(libs.plugins.sentry)
+    alias(libs.plugins.room)
 }
 
 android {
@@ -61,6 +62,10 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+room {
+    schemaDirectory("src/main/java/me/amirkazemzade/materialmusicplayer/data/db/schemas")
 }
 
 detekt {
@@ -123,6 +128,12 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
 
+    // Database
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
     // DI
 
     // Koin
@@ -134,6 +145,7 @@ dependencies {
     // Test
 
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.room.testing)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.amirkazemzade.materialmusicplayer.presentation.common.MusicTimelineGeneratorMock
-import me.amirkazemzade.materialmusicplayer.presentation.common.formatToMinutesAndSeconds
+import me.amirkazemzade.materialmusicplayer.presentation.common.extensions.formatToMinutesAndSeconds
 import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicPlayerTheme
 import kotlin.math.max
 

@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import me.amirkazemzade.materialmusicplayer.R
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import me.amirkazemzade.materialmusicplayer.presentation.common.components.AlbumCover
-import me.amirkazemzade.materialmusicplayer.presentation.common.toImageBitmap
 import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicPlayerTheme
 
 @Composable
@@ -54,7 +54,7 @@ fun MusicListItem(
             Modifier
                 .size(48.dp)
                 .clip(RoundedCornerShape(8.dp)),
-            cover = music.artwork?.toImageBitmap(),
+            cover = music.artwork?.asImageBitmap(),
         )
         Spacer(modifier = Modifier.width(16.dp))
         Column(

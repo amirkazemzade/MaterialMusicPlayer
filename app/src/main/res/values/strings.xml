@@ -15,4 +15,12 @@
     <string name="is_not_favorite">Is not favorite</string>
     <string name="is_favorite">Is favorite</string>
     <string name="unknown">Unknown</string>
+    <string name="retry">Retry</string>
+    <string name="musics_list_partial_error_message">There was a problem loading %1$d musics</string>
+    <string name="ascending_order">Ascending Order</string>
+    <string name="descending_sort">Descending Sort</string>
+    <string name="date_added">Date Added</string>
+    <string name="title">Title</string>
+    <string name="artist">Artist</string>
+    <string name="no_music_found">No Music Found!</string>
 </resources>

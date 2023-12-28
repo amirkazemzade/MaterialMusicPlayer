@@ -1,5 +1,6 @@
 package me.amirkazemzade.materialmusicplayer.domain.model
 
+import android.graphics.Bitmap
 import android.net.Uri
 
 data class MusicFile(
@@ -11,10 +12,10 @@ data class MusicFile(
     val dateAdded: String?,
     val dateModified: String?,
     val duration: String?,
+    val uri: Uri,
     val genre: String? = null,
     val year: String? = null,
-    val artwork: ByteArray? = null,
-    val uri: Uri,
+    val artwork: Bitmap? = null,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -36,7 +37,7 @@ data class MusicFile(
         result = 31 * result + duration.hashCode()
         result = 31 * result + (genre?.hashCode() ?: 0)
         result = 31 * result + (year?.hashCode() ?: 0)
-        result = 31 * result + (artwork?.contentHashCode() ?: 0)
+        result = 31 * result + (artwork?.hashCode() ?: 0)
         return result
     }
 }

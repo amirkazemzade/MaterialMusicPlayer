@@ -1,0 +1,3 @@
+package me.amirkazemzade.materialmusicplayer.domain.source
+
+interface CacheMusicSource : ReadableMusicSource, WriteableMusicSource

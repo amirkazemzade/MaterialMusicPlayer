@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.launch
-import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.MusicEvent
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.MusicEvent
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.FullScreenPlayer
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.mini.MiniPlayer
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.states.PlayerState

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.media3.common.Player
 import androidx.media3.common.util.Util
 import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMediaControllerUseCase
-import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.MusicEvent
 
 class MusicControllerViewModel(
     getMediaControllerUseCase: GetMediaControllerUseCase,

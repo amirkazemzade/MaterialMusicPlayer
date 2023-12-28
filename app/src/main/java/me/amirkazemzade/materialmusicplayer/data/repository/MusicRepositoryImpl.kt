@@ -1,78 +1,52 @@
 package me.amirkazemzade.materialmusicplayer.data.repository
 
-import android.content.Context
-import android.os.Build
-import android.provider.MediaStore
-import io.sentry.Sentry
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import me.amirkazemzade.materialmusicplayer.data.mapper.toMusicFile
+import kotlinx.coroutines.flow.Flow
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
+import me.amirkazemzade.materialmusicplayer.domain.model.StatusGeneric
 import me.amirkazemzade.materialmusicplayer.domain.repository.MusicRepository
+import me.amirkazemzade.materialmusicplayer.domain.source.CacheMusicSource
+import me.amirkazemzade.materialmusicplayer.domain.source.RemoteMusicSource
+import me.amirkazemzade.materialmusicplayer.domain.strategies.CachingStrategy
 
 class MusicRepositoryImpl(
-    private val context: Context,
+    private val cacheSource: CacheMusicSource,
+    private val remoteSource: RemoteMusicSource,
 ) : MusicRepository {
-    override suspend fun getMusicList(sortOrder: String?): ImmutableList<MusicFile> =
-        withContext(
-            Dispatchers.IO,
-        ) {
-            val musicProjection =
-                buildList {
-                    addAll(
-                        listOf(
-                            MediaStore.Audio.Media._ID,
-                            MediaStore.Audio.Media.TITLE,
-                            MediaStore.Audio.Media.ARTIST,
-                            MediaStore.Audio.Media.ALBUM,
-                            MediaStore.Audio.Media.DATA,
-                            MediaStore.Audio.Media.DATE_ADDED,
-                            MediaStore.Audio.Media.DATE_MODIFIED,
-                            MediaStore.Audio.Media.DURATION,
-                            MediaStore.Audio.Media.YEAR,
-                        ),
-                    )
-                    if (Build.VERSION.SDK_INT >= 30) {
-                        add(MediaStore.Audio.Media.GENRE)
-                    }
-                }.toTypedArray()
 
-            // Query the MediaStore.Audio.Media table.
-            val cursor =
-                context.contentResolver.query(
-                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                    musicProjection,
-                    null,
-                    null,
-                    sortOrder,
-                )
+    override suspend fun getMusicListOrderedByDateAdded(ascending: Boolean): Flow<StatusGeneric<ImmutableList<MusicFile>, Int>> =
+        getMusicList(
+            getRemoteMusicList = { remoteSource.getMusicListOrderedByDateAdded(ascending) },
+            getCachedMusicList = { cacheSource.getMusicListOrderedByDateAdded(ascending) }
+        )
 
-            // Check if the cursor is not null and has at least one row.
-            if (cursor != null && cursor.moveToFirst()) {
-                // Create a list to store the music files.
-                val musicFiles = mutableListOf<MusicFile>()
+    override suspend fun getMusicListOrderedByTitle(ascending: Boolean): Flow<StatusGeneric<ImmutableList<MusicFile>, Int>> =
+        getMusicList(
+            getRemoteMusicList = { remoteSource.getMusicListOrderedByTitle(ascending) },
+            getCachedMusicList = { cacheSource.getMusicListOrderedByTitle(ascending) }
+        )
 
-                // Iterate over the cursor and add each music file to the list.
-                do {
-                    try {
-                        musicFiles.add(cursor.toMusicFile())
-                    } catch (e: Exception) {
-                        Sentry.captureException(e)
-                        Sentry.captureMessage("$cursor")
-                    }
-                } while (cursor.moveToNext())
+    override suspend fun getMusicListOrderedByArtist(ascending: Boolean): Flow<StatusGeneric<ImmutableList<MusicFile>, Int>> =
+        getMusicList(
+            getRemoteMusicList = { remoteSource.getMusicListOrderedByArtist(ascending) },
+            getCachedMusicList = { cacheSource.getMusicListOrderedByArtist(ascending) }
+        )
 
-                // Close the cursor.
-                cursor.close()
-
-                // Return the list of music files.
-                return@withContext musicFiles.toImmutableList()
-            } else {
-                // No music files found.
-                return@withContext persistentListOf()
+    private suspend fun getMusicList(
+        getRemoteMusicList: () -> Flow<StatusGeneric<ImmutableList<MusicFile>, Int>>,
+        getCachedMusicList: () -> Flow<StatusGeneric<ImmutableList<MusicFile>, Int>>,
+    ): Flow<StatusGeneric<ImmutableList<MusicFile>, Int>> {
+        return CachingStrategy.getValue(
+            getCacheVersion = suspend { cacheSource.getVersion() },
+            getCacheGeneration = suspend { cacheSource.getGeneration() },
+            getRemoteVersion = suspend { remoteSource.getVersion() },
+            getRemoteGeneration = suspend { remoteSource.getGeneration() },
+            getRemoteMusicList = getRemoteMusicList,
+            getCachedMusicList = getCachedMusicList,
+            updateCache = { version, generation, musics ->
+                cacheSource.insertMusicList(musics)
+                cacheSource.setVersionAndGeneration(version, generation)
             }
-        }
+        )
+    }
 }

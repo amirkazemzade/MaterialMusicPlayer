@@ -1,0 +1,3 @@
+package me.amirkazemzade.materialmusicplayer.presentation.common.materialmusicicons
+
+object MaterialMusicIcons

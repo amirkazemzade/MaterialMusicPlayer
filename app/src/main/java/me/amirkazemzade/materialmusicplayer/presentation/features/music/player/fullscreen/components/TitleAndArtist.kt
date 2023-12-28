@@ -16,8 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import me.amirkazemzade.materialmusicplayer.R
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
@@ -42,7 +44,7 @@ fun TitleAndArtist(
         ) {
             Text(
                 modifier = Modifier.basicMarquee(),
-                text = title ?: "",
+                text = title ?: stringResource(id = R.string.unknown),
                 style = MaterialTheme.typography.headlineSmall,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -50,7 +52,7 @@ fun TitleAndArtist(
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 modifier = Modifier.basicMarquee(),
-                text = artist ?: "",
+                text = artist ?: stringResource(id = R.string.unknown),
                 style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

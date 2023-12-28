@@ -10,7 +10,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.MusicEvent
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.MusicEvent
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.mini.components.MiniAlbumCover
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.mini.components.MiniControllers
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.mini.components.MiniTitleAndArtist
