@@ -59,11 +59,18 @@ jobs:
         run: ./gradlew bundleRelease
 
       #3
+      - name: Upload Detekt Report to Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: detekt-report-artifacts
+          path: |
+            app/build/reports/lint-results-debug.html
+
       - name: Upload Release Build to Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: release-artifacts
-          paths: |
+          path: |
             app/build/outputs/apk/release/
             app/build/outputs/bundle/release/
 
