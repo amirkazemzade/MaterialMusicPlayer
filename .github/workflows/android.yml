@@ -17,16 +17,16 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'corretto'
+          distribution: 'temurin'
           cache: gradle
-
-      - name: Cache Gradle and wrapper
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          cache-dependency-path: |
+            **/*.gradle*
+            **/gradle-wrapper.properties
+            buildSrc/**/Versions.kt
+            buildSrc/**/Dependencies.kt
+            gradle/*.versions.toml
+            **/versions.properties
+            ./app/build
 
       #1
       - name: Grant execute permission for gradlew
