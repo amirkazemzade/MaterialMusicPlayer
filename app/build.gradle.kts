@@ -65,7 +65,7 @@ android {
 }
 
 room {
-    schemaDirectory("src/main/java/me/amirkazemzade/materialmusicplayer/data/db/schemas")
+    schemaDirectory("${projectDir}/src/main/java/me/amirkazemzade/materialmusicplayer/data/db/schemas")
 }
 
 detekt {
