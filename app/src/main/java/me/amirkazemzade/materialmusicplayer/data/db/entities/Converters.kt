@@ -1,4 +1,4 @@
-package me.amirkazemzade.materialmusicplayer.data.db.entity
+package me.amirkazemzade.materialmusicplayer.data.db.entities
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

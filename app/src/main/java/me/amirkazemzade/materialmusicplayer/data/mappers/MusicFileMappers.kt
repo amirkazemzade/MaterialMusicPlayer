@@ -1,4 +1,4 @@
-package me.amirkazemzade.materialmusicplayer.data.mapper
+package me.amirkazemzade.materialmusicplayer.data.mappers
 
 import android.content.ContentUris
 import android.content.Context
@@ -11,16 +11,15 @@ import android.os.Build
 import android.provider.MediaStore
 import android.util.Size
 import androidx.core.database.getStringOrNull
-import me.amirkazemzade.materialmusicplayer.data.db.entity.MusicFileEntity
+import me.amirkazemzade.materialmusicplayer.data.db.entities.music.MusicEntity
 import me.amirkazemzade.materialmusicplayer.data.extensions.toBitmap
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import java.io.IOException
 
 
-fun Cursor.toMusicFile(
-    context: Context,
+// Cursor Mappers
 
-    ): MusicFile {
+fun Cursor.toMusicFile(context: Context): MusicFile {
     val id = getLong(getColumnIndexOrThrow(MediaStore.Audio.Media._ID))
     val filePath = getString(getColumnIndexOrThrow(MediaStore.Audio.Media.DATA))
     val uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id)
@@ -75,7 +74,9 @@ private fun thumbnailExtractor(
     }
 }
 
-fun MusicFileEntity.toMusicFile() = MusicFile(
+// MusicEntity Mappers
+
+fun MusicEntity.toMusicFile() = MusicFile(
     id = id,
     title = title,
     artist = artist,
@@ -90,7 +91,7 @@ fun MusicFileEntity.toMusicFile() = MusicFile(
     uri = uri,
 )
 
-fun MusicFile.toMusicFileEntity() = MusicFileEntity(
+fun MusicFile.toMusicEntity() = MusicEntity(
     id = id,
     title = title,
     artist = artist,

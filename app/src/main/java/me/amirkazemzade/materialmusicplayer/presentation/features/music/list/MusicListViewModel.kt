@@ -125,6 +125,7 @@ class MusicListViewModel(
 
 private fun createMediaItem(musicFile: MusicFile) =
     MediaItem.Builder()
+        .setMediaId(musicFile.id.toString())
         .setUri(musicFile.uri)
         .setMediaMetadata(
             MediaMetadata.Builder()

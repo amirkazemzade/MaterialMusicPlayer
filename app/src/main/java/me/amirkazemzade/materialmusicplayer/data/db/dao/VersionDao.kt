@@ -4,14 +4,14 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
-import me.amirkazemzade.materialmusicplayer.data.db.entity.VersionEntity
+import me.amirkazemzade.materialmusicplayer.data.db.entities.version.VersionEntity
 
 @Dao
 interface VersionDao {
     @Upsert
     suspend fun upsertVersion(version: VersionEntity)
 
-    @Query("DELETE FROM VERSIONENTITY")
+    @Query("DELETE FROM versionentity")
     suspend fun deleteVersion()
 
     @Transaction
@@ -20,6 +20,6 @@ interface VersionDao {
         upsertVersion(version)
     }
 
-    @Query("SELECT * FROM VersionEntity LIMIT 1")
+    @Query("SELECT * FROM versionentity LIMIT 1")
     suspend fun getVersion(): VersionEntity?
 }

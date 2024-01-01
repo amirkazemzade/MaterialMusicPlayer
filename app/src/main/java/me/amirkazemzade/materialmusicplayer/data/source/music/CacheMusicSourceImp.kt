@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 import me.amirkazemzade.materialmusicplayer.data.db.dao.MusicDao
 import me.amirkazemzade.materialmusicplayer.data.db.dao.VersionDao
-import me.amirkazemzade.materialmusicplayer.data.db.entity.MusicFileEntity
-import me.amirkazemzade.materialmusicplayer.data.db.entity.VersionEntity
-import me.amirkazemzade.materialmusicplayer.data.mapper.toMusicFile
-import me.amirkazemzade.materialmusicplayer.data.mapper.toMusicFileEntity
+import me.amirkazemzade.materialmusicplayer.data.db.entities.music.MusicEntity
+import me.amirkazemzade.materialmusicplayer.data.db.entities.version.VersionEntity
+import me.amirkazemzade.materialmusicplayer.data.mappers.toMusicEntity
+import me.amirkazemzade.materialmusicplayer.data.mappers.toMusicFile
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import me.amirkazemzade.materialmusicplayer.domain.model.StatusGeneric
 import me.amirkazemzade.materialmusicplayer.domain.source.CacheMusicSource
@@ -36,7 +36,7 @@ class CacheMusicSourceImp(
     override fun getMusicListOrderedByArtist(ascending: Boolean): Flow<StatusGeneric<ImmutableList<MusicFile>, Int>> =
         getMusicList { musicDao.getMusicsOrderedByArtist(ascending) }
 
-    private fun getMusicList(musics: () -> Flow<List<MusicFileEntity>>): Flow<StatusGeneric<ImmutableList<MusicFile>, Int>> =
+    private fun getMusicList(musics: () -> Flow<List<MusicEntity>>): Flow<StatusGeneric<ImmutableList<MusicFile>, Int>> =
         flow {
             emit(StatusGeneric.Loading())
             musics()
@@ -51,6 +51,6 @@ class CacheMusicSourceImp(
         }
 
     override suspend fun insertMusicList(musics: List<MusicFile>) {
-        musicDao.upsertMusics(musics.map { it.toMusicFileEntity() })
+        musicDao.upsertMusics(musics.map { it.toMusicEntity() })
     }
 }

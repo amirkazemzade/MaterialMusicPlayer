@@ -1,4 +1,4 @@
-package me.amirkazemzade.materialmusicplayer.data.db.entity
+package me.amirkazemzade.materialmusicplayer.data.db.entities.version
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

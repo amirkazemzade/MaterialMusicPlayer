@@ -8,12 +8,13 @@ import io.sentry.Sentry
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
-import me.amirkazemzade.materialmusicplayer.data.mapper.toMusicFile
+import me.amirkazemzade.materialmusicplayer.data.mappers.toMusicFile
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import me.amirkazemzade.materialmusicplayer.domain.model.StatusGeneric
 import me.amirkazemzade.materialmusicplayer.domain.source.RemoteMusicSource
@@ -46,9 +47,10 @@ val MUSIC_PROJECTION =
 
 class MediaStoreMusicSource(
     private val context: Context,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : RemoteMusicSource {
 
-    override suspend fun getVersion(): String = withContext(Dispatchers.IO) {
+    override suspend fun getVersion(): String = withContext(ioDispatcher) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             MediaStore.getVersion(context, MediaStore.VOLUME_EXTERNAL)
         } else {
@@ -56,7 +58,7 @@ class MediaStoreMusicSource(
         }
     }
 
-    override suspend fun getGeneration(): Long? = withContext(Dispatchers.IO) {
+    override suspend fun getGeneration(): Long? = withContext(ioDispatcher) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             MediaStore.getGeneration(context, MediaStore.VOLUME_EXTERNAL)
         } else {
@@ -130,7 +132,7 @@ class MediaStoreMusicSource(
             // No music files found.
             emit(StatusGeneric.Success(data = persistentListOf(), partialMessage = 0))
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
 
     override fun getMusicListOrderedByDateAdded(ascending: Boolean): Flow<StatusGeneric<ImmutableList<MusicFile>, Int>> {
         return getMusicList(

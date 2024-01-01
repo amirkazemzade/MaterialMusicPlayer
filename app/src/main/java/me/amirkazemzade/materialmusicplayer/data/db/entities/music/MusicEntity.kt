@@ -1,12 +1,19 @@
-package me.amirkazemzade.materialmusicplayer.data.db.entity
+package me.amirkazemzade.materialmusicplayer.data.db.entities.music
 
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.RenameTable
 
+@RenameTable.Entries(
+    RenameTable(
+        fromTableName = "MusicFileEntity",
+        toTableName = "MusicEntity",
+    )
+)
 @Entity
-data class MusicFileEntity(
+data class MusicEntity(
     val title: String?,
     val artist: String?,
     val album: String?,
