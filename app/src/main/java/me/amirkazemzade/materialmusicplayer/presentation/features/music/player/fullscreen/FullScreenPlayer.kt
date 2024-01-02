@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,6 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.MediaMetadata
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import me.amirkazemzade.materialmusicplayer.presentation.common.MusicTimelineGeneratorMock
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.MusicEvent
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components.BottomActionBar
@@ -26,12 +29,14 @@ import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.f
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components.TitleAndArtist
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components.TopActionBar
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.states.PlayerState
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.states.TimelineState
 import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicPlayerTheme
 
 @Composable
 fun FullScreenPlayer(
     playerState: PlayerState,
     onMinimize: () -> Unit,
+    timelineStateFlow: StateFlow<TimelineState>,
     onEvent: (event: MusicEvent) -> Unit,
     onFavoriteChange: (value: Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -70,8 +75,7 @@ fun FullScreenPlayer(
             )
             Spacer(modifier = Modifier.weight(1f))
             Timeline(
-                currentPositionMs = playerState.currentPosition,
-                durationMs = playerState.duration,
+                timelineStateFlow = timelineStateFlow,
                 onCurrentPositionChange = { positionMs -> onEvent(MusicEvent.SeekTo(positionMs)) },
             )
             PlayerControllers(
@@ -107,6 +111,16 @@ fun FullScreenPlayerPreview() {
 
     val position = timelineMock.state.collectAsState()
     val isPlaying = remember { mutableStateOf(true) }
+
+    val timelineStateFlow = MutableStateFlow(TimelineState())
+
+    LaunchedEffect(key1 = position) {
+        timelineStateFlow.value = TimelineState(
+            duration = timelineMock.duration,
+            currentPosition = position.value,
+        )
+    }
+
     MaterialMusicPlayerTheme {
         Scaffold {
             FullScreenPlayer(
@@ -118,11 +132,8 @@ fun FullScreenPlayerPreview() {
                         .setArtist("Taylor Swift")
                         .setTitle("Speak Now (Taylor’s Version)")
                         .build(),
-                    currentPosition = position.value,
-                    duration = timelineMock.duration,
                 ),
                 onMinimize = {},
-                onFavoriteChange = {},
                 onEvent = { event ->
                     when (event) {
                         MusicEvent.Next -> {
@@ -148,7 +159,9 @@ fun FullScreenPlayerPreview() {
                         else -> {}
                     }
                 },
+                onFavoriteChange = {},
                 modifier = Modifier.padding(it),
+                timelineStateFlow = timelineStateFlow,
             )
         }
     }

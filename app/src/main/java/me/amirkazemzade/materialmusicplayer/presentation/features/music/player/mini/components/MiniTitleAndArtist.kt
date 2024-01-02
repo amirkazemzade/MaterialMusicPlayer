@@ -45,6 +45,7 @@ fun MiniTitleAndArtist(
                 modifier = Modifier.basicMarquee(),
                 text = mediaMetadata?.title?.toString() ?: stringResource(id = R.string.unknown),
                 style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -52,6 +53,7 @@ fun MiniTitleAndArtist(
                 modifier = Modifier.basicMarquee(),
                 text = mediaMetadata?.artist?.toString() ?: stringResource(id = R.string.unknown),
                 style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )

@@ -6,17 +6,20 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.MusicEvent
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.FullScreenPlayer
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.mini.MiniPlayer
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.states.PlayerState
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.states.TimelineState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MusicPlayerBottomSheetContent(
     state: SheetState,
     playerState: PlayerState,
+    timelineStateFlow: StateFlow<TimelineState>,
     onEvent: (event: MusicEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -26,6 +29,7 @@ fun MusicPlayerBottomSheetContent(
         FullScreenPlayer(
             modifier = modifier,
             playerState = playerState,
+            timelineStateFlow = timelineStateFlow,
             onMinimize = { scope.launch { state.partialExpand() } },
             onEvent = onEvent,
             onFavoriteChange = { /* TODO: implement favorites */ },

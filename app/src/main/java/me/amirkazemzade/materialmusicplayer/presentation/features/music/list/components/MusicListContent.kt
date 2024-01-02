@@ -1,6 +1,8 @@
 package me.amirkazemzade.materialmusicplayer.presentation.features.music.list.components
 
 import android.net.Uri
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -45,6 +47,7 @@ import me.amirkazemzade.materialmusicplayer.presentation.common.materialmusicico
 import me.amirkazemzade.materialmusicplayer.presentation.common.materialmusicicons.icons.SortDescending
 import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicPlayerTheme
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MusicListContent(
     contentPadding: PaddingValues,
@@ -86,7 +89,9 @@ fun MusicListContent(
         ) {
             itemsIndexed(musics, key = { _, item -> item.id }) { index, music ->
                 MusicListItem(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .animateItemPlacement(animationSpec = tween(700)),
                     music = music,
                     onClick = { onItemClick(index) },
                 )

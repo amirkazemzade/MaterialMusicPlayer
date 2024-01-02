@@ -37,7 +37,7 @@ fun PlayerBottomSheetScaffold(
 
     val hazeState = remember { HazeState() }
 
-    PlayerStateProvider { playerState, onEvent ->
+    PlayerStateProvider { playerState, timelineStateFlow, onEvent ->
         val color = playerState.mediaMetadata?.artworkData?.toBitmap()?.extractThemeColor()
         MaterialMusicPlayerTheme(
             contentColor = color
@@ -70,6 +70,7 @@ fun PlayerBottomSheetScaffold(
                             .then(topPadding),
                         state = scaffoldState.bottomSheetState,
                         playerState = playerState,
+                        timelineStateFlow = timelineStateFlow,
                         onEvent = onEvent,
                     )
                 },

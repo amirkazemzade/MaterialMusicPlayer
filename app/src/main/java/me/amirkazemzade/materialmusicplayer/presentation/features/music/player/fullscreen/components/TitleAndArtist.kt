@@ -46,6 +46,7 @@ fun TitleAndArtist(
                 modifier = Modifier.basicMarquee(),
                 text = title ?: stringResource(id = R.string.unknown),
                 style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.primary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -54,6 +55,7 @@ fun TitleAndArtist(
                 modifier = Modifier.basicMarquee(),
                 text = artist ?: stringResource(id = R.string.unknown),
                 style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.secondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
