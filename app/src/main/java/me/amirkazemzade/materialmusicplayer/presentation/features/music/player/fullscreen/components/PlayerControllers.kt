@@ -1,7 +1,5 @@
 package me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components
 
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -73,18 +71,9 @@ fun PlayerControllers(
             )
         }
 
-        val playPauseButtonRadius = if (isPlaying) 12.dp else 32.dp
-        val playPauseButtonCornerRadius =
-            animateDpAsState(
-                targetValue = playPauseButtonRadius,
-                animationSpec = tween(durationMillis = 250),
-                label = "play_pause_shape_conversion",
-            )
-
         AnimatedPlayPauseButton(
             modifier = Modifier.size(56.dp),
             iconModifier = Modifier.size(40.dp),
-            playPauseButtonCornerRadius = playPauseButtonCornerRadius.value,
             isPlaying = isPlaying,
             onPlay = onPlay,
             onPause = onPause
