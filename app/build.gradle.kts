@@ -11,6 +11,16 @@ android {
     namespace = "me.amirkazemzade.materialmusicplayer"
     compileSdk = 34
 
+    splits {
+        // Configures multiple APKs based on ABI.
+        abi {
+            isEnable = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+            isUniversalApk = true
+        }
+    }
+
     defaultConfig {
         applicationId = "me.amirkazemzade.materialmusicplayer"
         minSdk = 26
