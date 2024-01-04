@@ -21,7 +21,7 @@ import androidx.media3.common.MediaMetadata
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import me.amirkazemzade.materialmusicplayer.presentation.common.MusicTimelineGeneratorMock
-import me.amirkazemzade.materialmusicplayer.presentation.features.music.MusicEvent
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.events.PlayerEvent
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components.BottomActionBar
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components.FullScreenAlbumCover
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.components.PlayerControllers
@@ -37,7 +37,7 @@ fun FullScreenPlayer(
     playerState: PlayerState,
     onMinimize: () -> Unit,
     timelineStateFlow: StateFlow<TimelineState>,
-    onEvent: (event: MusicEvent) -> Unit,
+    onEvent: (event: PlayerEvent) -> Unit,
     onFavoriteChange: (value: Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -76,19 +76,19 @@ fun FullScreenPlayer(
             Spacer(modifier = Modifier.weight(1f))
             Timeline(
                 timelineStateFlow = timelineStateFlow,
-                onCurrentPositionChange = { positionMs -> onEvent(MusicEvent.SeekTo(positionMs)) },
+                onCurrentPositionChange = { positionMs -> onEvent(PlayerEvent.SeekTo(positionMs)) },
             )
             PlayerControllers(
                 shuffleActive = playerState.shuffleModeEnabled,
                 isFavorite = false,
                 isPlaying = playerState.isPlaying,
                 canSkipToNext = playerState.canSkipToNext,
-                onShuffleChange = { onEvent(MusicEvent.ShuffleChange(it)) },
+                onShuffleChange = { onEvent(PlayerEvent.ShuffleChange(it)) },
                 onFavoriteChange = onFavoriteChange,
-                onPlay = { onEvent(MusicEvent.Play) },
-                onPause = { onEvent(MusicEvent.Pause) },
-                onPrevious = { onEvent(MusicEvent.Previous) },
-                onNext = { onEvent(MusicEvent.Next) },
+                onPlay = { onEvent(PlayerEvent.Play) },
+                onPause = { onEvent(PlayerEvent.Pause) },
+                onPrevious = { onEvent(PlayerEvent.Previous) },
+                onNext = { onEvent(PlayerEvent.Next) },
             )
             Spacer(modifier = Modifier.weight(1f))
             BottomActionBar(
@@ -136,23 +136,23 @@ fun FullScreenPlayerPreview() {
                 onMinimize = {},
                 onEvent = { event ->
                     when (event) {
-                        MusicEvent.Next -> {
+                        PlayerEvent.Next -> {
                             timelineMock.setPosition(0)
                         }
 
-                        MusicEvent.Pause -> {
+                        PlayerEvent.Pause -> {
                             isPlaying.value = false
                         }
 
-                        MusicEvent.Play -> {
+                        PlayerEvent.Play -> {
                             isPlaying.value = true
                         }
 
-                        MusicEvent.Previous -> {
+                        PlayerEvent.Previous -> {
                             timelineMock.setPosition(0)
                         }
 
-                        is MusicEvent.SeekTo -> {
+                        is PlayerEvent.SeekTo -> {
                             timelineMock.setPosition(event.positionMs)
                         }
 

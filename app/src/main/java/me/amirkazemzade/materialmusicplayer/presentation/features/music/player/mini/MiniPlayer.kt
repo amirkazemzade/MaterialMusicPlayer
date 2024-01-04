@@ -10,7 +10,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import me.amirkazemzade.materialmusicplayer.presentation.features.music.MusicEvent
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.events.PlayerEvent
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.mini.components.MiniAlbumCover
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.mini.components.MiniControllers
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.mini.components.MiniTitleAndArtist
@@ -20,7 +20,7 @@ import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.s
 fun MiniPlayer(
     playerState: PlayerState,
     onExpand: () -> Unit,
-    onEvent: (event: MusicEvent) -> Unit,
+    onEvent: (event: PlayerEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -47,10 +47,10 @@ fun MiniPlayer(
             MiniControllers(
                 isPlaying = playerState.isPlaying,
                 canSkipToNext = playerState.canSkipToNext,
-                onPlay = { onEvent(MusicEvent.Play) },
-                onPause = { onEvent(MusicEvent.Pause) },
-                onPrevious = { onEvent(MusicEvent.Previous) },
-                onNext = { onEvent(MusicEvent.Next) },
+                onPlay = { onEvent(PlayerEvent.Play) },
+                onPause = { onEvent(PlayerEvent.Pause) },
+                onPrevious = { onEvent(PlayerEvent.Previous) },
+                onNext = { onEvent(PlayerEvent.Next) },
             )
         }
     }

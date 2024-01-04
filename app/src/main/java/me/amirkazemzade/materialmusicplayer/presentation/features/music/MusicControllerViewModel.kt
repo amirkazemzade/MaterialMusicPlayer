@@ -14,6 +14,8 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMediaControllerUseCase
+import me.amirkazemzade.materialmusicplayer.presentation.common.defaults.MaterialMusicPlayerDefaults
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.events.PlayerEvent
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.states.PlayerState
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.states.TimelineState
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.states.toPlayerState
@@ -22,7 +24,7 @@ import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.s
 class MusicControllerViewModel(
     getMediaControllerUseCase: GetMediaControllerUseCase,
 ) : ViewModel() {
-    val mediaControllerState = getMediaControllerUseCase()
+    private val mediaControllerState = getMediaControllerUseCase()
 
     private val mediaController
         get() = mediaControllerState.value.data
@@ -79,7 +81,7 @@ class MusicControllerViewModel(
                             withContext(Dispatchers.Main) {
                                 _timelineState.value = mediaController.toTimelineState()
                             }
-                            delay(500)
+                            delay(MaterialMusicPlayerDefaults.SCREEN_UPDATE_INTERVAL_MS)
                         }
                     }
                 }
@@ -100,14 +102,14 @@ class MusicControllerViewModel(
         super.onCleared()
     }
 
-    fun onEvent(event: MusicEvent) {
+    fun onEvent(event: PlayerEvent) {
         when (event) {
-            MusicEvent.Play -> onPlay()
-            MusicEvent.Pause -> onPause()
-            MusicEvent.Next -> onNext()
-            MusicEvent.Previous -> onPrevious()
-            is MusicEvent.SeekTo -> onSeekTo(event.positionMs)
-            is MusicEvent.ShuffleChange -> onShuffleChange(event.shuffleEnable)
+            PlayerEvent.Play -> onPlay()
+            PlayerEvent.Pause -> onPause()
+            PlayerEvent.Next -> onNext()
+            PlayerEvent.Previous -> onPrevious()
+            is PlayerEvent.SeekTo -> onSeekTo(event.positionMs)
+            is PlayerEvent.ShuffleChange -> onShuffleChange(event.shuffleEnable)
         }
     }
 
