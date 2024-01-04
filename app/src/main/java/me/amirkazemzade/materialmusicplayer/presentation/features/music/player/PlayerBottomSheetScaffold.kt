@@ -3,12 +3,10 @@ package me.amirkazemzade.materialmusicplayer.presentation.features.music.player
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
@@ -24,6 +22,7 @@ import me.amirkazemzade.materialmusicplayer.presentation.common.extensions.takeI
 import me.amirkazemzade.materialmusicplayer.presentation.common.extensions.toBitmap
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.components.MusicPlayerBottomSheetContent
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.components.PlayerStateProvider
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.defaults.PlayerBottomSheetDefaults
 import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicPlayerTheme
 import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.extractThemeColor
 
@@ -43,11 +42,10 @@ fun PlayerBottomSheetScaffold(
             contentColor = color
         ) {
             val systemBarPadding = WindowInsets.systemBars.asPaddingValues()
-            val statusBarsPadding = systemBarPadding.calculateTopPadding()
             val navigationBarsPadding = systemBarPadding.calculateBottomPadding()
 
             val sheetPeekHeight =
-                if (playerState.isAvailable) 80.dp + navigationBarsPadding
+                if (playerState.isAvailable) SHEET_MIN_HEIGHT.dp + navigationBarsPadding
                 else 0.dp
 
             BottomSheetScaffold(
@@ -56,18 +54,9 @@ fun PlayerBottomSheetScaffold(
                 sheetContainerColor = Color.Transparent,
                 sheetContentColor = contentColorFor(MaterialTheme.colorScheme.surface),
                 sheetContent = {
-                    val topPadding =
-                        if (scaffoldState.bottomSheetState.targetValue == SheetValue.Expanded) {
-                            Modifier.padding(top = statusBarsPadding)
-                        } else {
-                            Modifier
-                        }
-
                     MusicPlayerBottomSheetContent(
                         modifier = Modifier
-                            .hazeChild(state = hazeState)
-                            .padding(bottom = navigationBarsPadding)
-                            .then(topPadding),
+                            .hazeChild(state = hazeState),
                         state = scaffoldState.bottomSheetState,
                         playerState = playerState,
                         timelineStateFlow = timelineStateFlow,
@@ -91,3 +80,5 @@ fun PlayerBottomSheetScaffold(
         }
     }
 }
+
+internal const val SHEET_MIN_HEIGHT = PlayerBottomSheetDefaults.SHEET_MIN_PICK_HEIGHT
