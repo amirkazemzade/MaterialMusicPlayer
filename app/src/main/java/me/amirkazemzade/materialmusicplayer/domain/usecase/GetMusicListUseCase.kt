@@ -15,6 +15,7 @@ import me.amirkazemzade.materialmusicplayer.domain.repository.MusicRepository
 class GetMusicListUseCase(
     private val repository: MusicRepository,
 ) {
+
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend operator fun invoke(
         sortType: SortType,

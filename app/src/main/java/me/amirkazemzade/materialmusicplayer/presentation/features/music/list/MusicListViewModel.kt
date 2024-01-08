@@ -2,29 +2,26 @@ package me.amirkazemzade.materialmusicplayer.presentation.features.music.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.media3.common.MediaItem
-import androidx.media3.common.MediaMetadata
-import androidx.media3.session.MediaController
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
-import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import me.amirkazemzade.materialmusicplayer.domain.model.SortOrder
 import me.amirkazemzade.materialmusicplayer.domain.model.SortType
 import me.amirkazemzade.materialmusicplayer.domain.model.StatusCore
-import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMediaControllerUseCase
 import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMusicListUseCase
-import me.amirkazemzade.materialmusicplayer.presentation.common.extensions.reorder
+import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMusicPlayerControllerUseCase
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MusicListViewModel(
     private val getMusicListUseCase: GetMusicListUseCase,
-    getMediaControllerUseCase: GetMediaControllerUseCase,
+    getMusicPlayerControllerUseCase: GetMusicPlayerControllerUseCase,
 ) : ViewModel() {
-    val mediaControllerState = getMediaControllerUseCase()
+    val musicPlayerControllerState = getMusicPlayerControllerUseCase(viewModelScope)
+    private val musicPlayerController
+        get() = musicPlayerControllerState.value.data
 
     private val _refresh = MutableStateFlow(false)
     private val _sortType = MutableStateFlow(SortType.DATE_ADDED)
@@ -84,8 +81,7 @@ class MusicListViewModel(
             }
 
             is MusicListEvent.Play -> playMusic(
-                index = event.index,
-                mediaController = event.mediaController
+                index = event.index
             )
 
             is MusicListEvent.SortByOrder -> {
@@ -102,35 +98,17 @@ class MusicListViewModel(
 
     private fun playMusic(
         index: Int,
-        mediaController: MediaController,
     ) {
-        if (state.value !is MusicListState.Success) return
-        val playList = (state.value as MusicListState.Success).musics
-            .reorder(index)
-            .map { musicFile -> createMediaItem(musicFile) }
-
-        playList.let {
-            mediaController.clearMediaItems()
-            mediaController.setMediaItems(playList)
-            mediaController.prepare()
-            mediaController.play()
-        }
+        val musicListState = state.value
+        if (musicListState !is MusicListState.Success) return
+        musicPlayerController?.play(
+            musics = musicListState.musics,
+            startIndex = index,
+        )
     }
 
     override fun onCleared() {
-        mediaControllerState.value.data?.release()
+        musicPlayerController?.release()
         super.onCleared()
     }
 }
-
-private fun createMediaItem(musicFile: MusicFile) =
-    MediaItem.Builder()
-        .setMediaId(musicFile.id.toString())
-        .setUri(musicFile.uri)
-        .setMediaMetadata(
-            MediaMetadata.Builder()
-                .setTitle(musicFile.title)
-                .setArtist(musicFile.artist)
-                .build()
-        )
-        .build()

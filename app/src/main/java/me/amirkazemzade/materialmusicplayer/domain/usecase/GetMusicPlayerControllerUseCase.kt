@@ -5,14 +5,18 @@ import android.content.ComponentName
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.MoreExecutors
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import me.amirkazemzade.materialmusicplayer.data.MusicPlayerController
 import me.amirkazemzade.materialmusicplayer.data.service.MusicSessionService
 import me.amirkazemzade.materialmusicplayer.domain.model.Status
 
-class GetMediaControllerUseCase(private val app: Application) {
-    operator fun invoke(): StateFlow<Status<MediaController>> {
-        val mediaController = MutableStateFlow<Status<MediaController>>(Status.Loading())
+class GetMusicPlayerControllerUseCase(private val app: Application) {
+
+    operator fun invoke(scope: CoroutineScope): StateFlow<Status<MusicPlayerController>> {
+        val musicPlayerControllerFlow =
+            MutableStateFlow<Status<MusicPlayerController>>(Status.Loading())
 
         val sessionToken =
             SessionToken(
@@ -22,10 +26,16 @@ class GetMediaControllerUseCase(private val app: Application) {
         val controllerFuture = MediaController.Builder(app, sessionToken).buildAsync()
         controllerFuture.addListener(
             {
-                mediaController.value = Status.Success(controllerFuture.get())
+                val mediaController = controllerFuture.get()
+                val musicPlayerController = MusicPlayerController(
+                    player = mediaController,
+                    scope = scope
+                )
+                musicPlayerControllerFlow.value = Status.Success(musicPlayerController)
             },
             MoreExecutors.directExecutor(),
         )
-        return mediaController
+
+        return musicPlayerControllerFlow
     }
 }

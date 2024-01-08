@@ -11,9 +11,14 @@ import android.os.Build
 import android.provider.MediaStore
 import android.util.Size
 import androidx.core.database.getStringOrNull
+import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
+import kotlinx.collections.immutable.toImmutableList
 import me.amirkazemzade.materialmusicplayer.data.db.entities.music.MusicEntity
 import me.amirkazemzade.materialmusicplayer.data.extensions.toBitmap
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
+import me.amirkazemzade.materialmusicplayer.domain.model.Queue
+import me.amirkazemzade.materialmusicplayer.domain.model.QueueItemWithData
 import java.io.IOException
 
 
@@ -105,3 +110,40 @@ fun MusicFile.toMusicEntity() = MusicEntity(
     artworkThumbnail = artwork,
     uri = uri,
 )
+
+// MediaItem Mappers
+
+fun MusicFile.toMediaItem() =
+    MediaItem.Builder()
+        .setMediaId(id.toString())
+        .setUri(uri)
+        .setMediaMetadata(
+            MediaMetadata.Builder()
+                .setTitle(title)
+                .setArtist(artist)
+                .build()
+        )
+        .build()
+
+fun Iterable<MusicFile>.mapToMediaItems(): List<MediaItem> =
+    map { musicFile -> musicFile.toMediaItem() }
+
+// QueueItem Mappers
+
+fun Iterable<MusicFile>.mapToQueueItemsWithData(): List<QueueItemWithData> =
+    mapIndexed { index, music ->
+        QueueItemWithData(
+            musicId = music.id,
+            order = index,
+            title = music.title,
+            artist = music.artist,
+            uri = music.uri,
+        )
+    }
+
+fun Iterable<MusicFile>.toQueue(startIndex: Int, startPositionMs: Long): Queue =
+    Queue(
+        musics = mapToQueueItemsWithData().toImmutableList(),
+        currentIndex = startIndex,
+        currentPositionMs = startPositionMs,
+    )

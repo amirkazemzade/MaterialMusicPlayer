@@ -26,7 +26,7 @@ fun MusicList(
     modifier: Modifier = Modifier,
     viewModel: MusicListViewModel = koinViewModel(),
 ) {
-    val mediaControllerState = viewModel.mediaControllerState.collectAsStateWithLifecycle()
+    val mediaControllerState = viewModel.musicPlayerControllerState.collectAsStateWithLifecycle()
     val musicListState = viewModel.state.collectAsStateWithLifecycle()
     Box(
         contentAlignment = Alignment.Center,
@@ -88,10 +88,7 @@ fun MusicList(
                         onItemClick = { index ->
                             if (mediaControllerState.value is Status.Success) {
                                 viewModel.onEvent(
-                                    MusicListEvent.Play(
-                                        index = index,
-                                        mediaController = mediaControllerState.value.data!!
-                                    )
+                                    MusicListEvent.Play(index = index)
                                 )
                             }
                         },

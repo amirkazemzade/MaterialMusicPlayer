@@ -3,15 +3,14 @@ package me.amirkazemzade.materialmusicplayer.data.service
 import androidx.media3.common.Player
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import me.amirkazemzade.materialmusicplayer.data.mappers.toQueue
-import me.amirkazemzade.materialmusicplayer.domain.usecase.ClearQueueUseCase
-import me.amirkazemzade.materialmusicplayer.domain.usecase.SetQueueUseCase
+import me.amirkazemzade.materialmusicplayer.domain.model.QueueData
+import me.amirkazemzade.materialmusicplayer.domain.usecase.queue.ClearQueueUseCase
+import me.amirkazemzade.materialmusicplayer.domain.usecase.queue.UpdateQueueDataUseCase
 
 class MusicQueueUpdateListener(
     private val scope: CoroutineScope,
-    private val setQueueUseCase: SetQueueUseCase,
     private val clearQueueUseCase: ClearQueueUseCase,
-    private val unknownText: String,
+    private val updateQueueDataUseCase: UpdateQueueDataUseCase,
 ) : Player.Listener {
     override fun onEvents(player: Player, events: Player.Events) {
         if (player.mediaItemCount == 0) {
@@ -19,9 +18,12 @@ class MusicQueueUpdateListener(
                 clearQueueUseCase()
             }
         } else {
-            val queue = player.toQueue(unknownText = unknownText)
+            val data = QueueData.build(
+                currentIndex = player.currentMediaItemIndex,
+                currentPositionMs = player.currentPosition,
+            )
             scope.launch {
-                setQueueUseCase(queue)
+                updateQueueDataUseCase(data)
             }
         }
         super.onEvents(player, events)

@@ -14,6 +14,8 @@ import androidx.room.RenameTable
 )
 @Entity
 data class MusicEntity(
+    @PrimaryKey
+    val id: Long,
     val title: String?,
     val artist: String?,
     val album: String?,
@@ -25,6 +27,8 @@ data class MusicEntity(
     val year: String? = null,
     val artworkThumbnail: Bitmap? = null,
     val uri: Uri,
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-)
+) {
+    object ParentColumns {
+        const val ID = "id"
+    }
+}

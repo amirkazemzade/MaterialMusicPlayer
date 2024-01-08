@@ -1,32 +1,34 @@
 package me.amirkazemzade.materialmusicplayer.data.db.entities.queue
 
-import android.net.Uri
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
-
+import me.amirkazemzade.materialmusicplayer.data.db.entities.music.MusicEntity
 
 @Entity(
+    indices = [
+        Index(
+            value = [QueueItemEntity.ChildColumns.MUSIC_ID],
+        )
+    ],
     foreignKeys = [
         ForeignKey(
-            entity = QueueEntity::class,
-            parentColumns = [QueueEntity.ParentColumns.ID],
-            childColumns = [QueueItemEntity.ChildColumns.QUEUE_ID],
+            entity = MusicEntity::class,
+            parentColumns = [MusicEntity.ParentColumns.ID],
+            childColumns = [QueueItemEntity.ChildColumns.MUSIC_ID],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
-            deferred = true,
-        )
+        ),
     ]
 )
 data class QueueItemEntity(
+    val musicId: Long,
+    val order: Int,
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val queueId: Long = 0,
-    val title: String,
-    val artist: String,
-    val uri: Uri,
 ) {
     object ChildColumns {
-        const val QUEUE_ID = "queueId"
+        const val MUSIC_ID = "musicId"
     }
 }

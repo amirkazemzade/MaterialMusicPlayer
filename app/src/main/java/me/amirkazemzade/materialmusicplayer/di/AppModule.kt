@@ -10,11 +10,10 @@ import me.amirkazemzade.materialmusicplayer.domain.repository.MusicRepository
 import me.amirkazemzade.materialmusicplayer.domain.repository.QueueRepository
 import me.amirkazemzade.materialmusicplayer.domain.source.CacheMusicSource
 import me.amirkazemzade.materialmusicplayer.domain.source.RemoteMusicSource
-import me.amirkazemzade.materialmusicplayer.domain.usecase.ClearQueueUseCase
-import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMediaControllerUseCase
 import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMusicListUseCase
-import me.amirkazemzade.materialmusicplayer.domain.usecase.GetQueueUseCase
-import me.amirkazemzade.materialmusicplayer.domain.usecase.SetQueueUseCase
+import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMusicPlayerControllerUseCase
+import me.amirkazemzade.materialmusicplayer.domain.usecase.QueueUseCases
+import me.amirkazemzade.materialmusicplayer.domain.usecase.queue.GetQueueUseCase
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.MusicControllerViewModel
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.MusicListViewModel
 import me.amirkazemzade.materialmusicplayer.presentation.navigation.Navigator
@@ -48,10 +47,9 @@ val appModule =
 
         // Use Cases
         singleOf(::GetMusicListUseCase)
-        singleOf(::GetMediaControllerUseCase)
+        singleOf(::GetMusicPlayerControllerUseCase)
         singleOf(::GetQueueUseCase)
-        singleOf(::SetQueueUseCase)
-        singleOf(::ClearQueueUseCase)
+        singleOf(::QueueUseCases)
 
         // ViewModels
         viewModelOf(::MusicControllerViewModel)

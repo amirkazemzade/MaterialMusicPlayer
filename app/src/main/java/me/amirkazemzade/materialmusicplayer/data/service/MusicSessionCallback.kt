@@ -9,7 +9,7 @@ import com.google.common.util.concurrent.SettableFuture
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import me.amirkazemzade.materialmusicplayer.data.mappers.toMedaItemsWithStartPosition
-import me.amirkazemzade.materialmusicplayer.domain.usecase.GetQueueUseCase
+import me.amirkazemzade.materialmusicplayer.domain.usecase.queue.GetQueueUseCase
 
 class MusicSessionCallback(
     private val scope: CoroutineScope,

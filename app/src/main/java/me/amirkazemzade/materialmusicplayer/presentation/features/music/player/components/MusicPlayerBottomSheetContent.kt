@@ -2,8 +2,6 @@ package me.amirkazemzade.materialmusicplayer.presentation.features.music.player.
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
@@ -53,6 +51,8 @@ fun MusicPlayerBottomSheetContent(
         mutableStateOf(minHeight.dp)
     }
 
+    val isExpanded = state.currentValue == SheetValue.Expanded
+
     LaunchedEffect(key1 = state.targetValue) {
         while (isActive && state.targetValue != state.currentValue) {
             try {
@@ -63,30 +63,45 @@ fun MusicPlayerBottomSheetContent(
             }
             delay(MaterialMusicPlayerDefaults.SCREEN_UPDATE_INTERVAL_MS)
         }
+
         bottomSheetHeight =
-            if (state.currentValue == SheetValue.Expanded) maxHeight.dp else minHeight.dp
+            if (isExpanded) maxHeight.dp else minHeight.dp
     }
 
     val fullScreenVisibility = (bottomSheetHeight.value - minHeight) / (maxHeight - minHeight)
 
     Box(modifier = modifier) {
-        MiniPlayer(
-            modifier = Modifier
-                .navigationBarsPadding()
-                .alpha(1 - fullScreenVisibility),
-            playerState = playerState,
-            onExpand = { scope.launch { state.expand() } },
-            onEvent = onEvent,
-        )
-        FullScreenPlayer(
-            modifier = Modifier
-                .systemBarsPadding()
-                .alpha(fullScreenVisibility),
-            playerState = playerState,
-            timelineStateFlow = timelineStateFlow,
-            onMinimize = { scope.launch { state.partialExpand() } },
-            onEvent = onEvent,
-            onFavoriteChange = { /* TODO: implement favorites */ },
-        )
+        if (state.targetValue != state.currentValue) {
+            FullScreenPlayer(
+                modifier = Modifier
+                    .alpha(fullScreenVisibility),
+                playerState = playerState,
+                timelineStateFlow = timelineStateFlow,
+                onMinimize = { scope.launch { state.partialExpand() } },
+                onEvent = onEvent,
+                onFavoriteChange = { /* TODO: implement favorites */ },
+            )
+            MiniPlayer(
+                modifier = Modifier
+                    .alpha(1 - fullScreenVisibility),
+                playerState = playerState,
+                onExpand = { scope.launch { state.expand() } },
+                onEvent = onEvent,
+            )
+        } else if (isExpanded) {
+            FullScreenPlayer(
+                playerState = playerState,
+                timelineStateFlow = timelineStateFlow,
+                onMinimize = { scope.launch { state.partialExpand() } },
+                onEvent = onEvent,
+                onFavoriteChange = { /* TODO: implement favorites */ },
+            )
+        } else {
+            MiniPlayer(
+                playerState = playerState,
+                onExpand = { scope.launch { state.expand() } },
+                onEvent = onEvent,
+            )
+        }
     }
 }

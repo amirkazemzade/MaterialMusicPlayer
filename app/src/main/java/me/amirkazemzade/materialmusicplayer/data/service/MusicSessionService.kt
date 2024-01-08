@@ -14,20 +14,13 @@ import com.google.common.util.concurrent.MoreExecutors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import me.amirkazemzade.materialmusicplayer.R
-import me.amirkazemzade.materialmusicplayer.data.mappers.toMedaItemsWithStartPosition
-import me.amirkazemzade.materialmusicplayer.domain.usecase.ClearQueueUseCase
-import me.amirkazemzade.materialmusicplayer.domain.usecase.GetQueueUseCase
-import me.amirkazemzade.materialmusicplayer.domain.usecase.SetQueueUseCase
+import me.amirkazemzade.materialmusicplayer.data.MusicPlayerController
+import me.amirkazemzade.materialmusicplayer.domain.usecase.queue.GetQueueUseCase
 import me.amirkazemzade.materialmusicplayer.presentation.MainActivity
 import org.koin.java.KoinJavaComponent.get
 
 class MusicSessionService(
-    private val getQueueUseCase: GetQueueUseCase = get(GetQueueUseCase::class.java),
-    private val setQueueUseCase: SetQueueUseCase = get(SetQueueUseCase::class.java),
-    private val clearQueueUseCase: ClearQueueUseCase = get(ClearQueueUseCase::class.java),
+    getQueueUseCase: GetQueueUseCase = get(GetQueueUseCase::class.java),
 ) : MediaLibraryService() {
 
     private var mediaLibrarySession: MediaLibrarySession? = null
@@ -37,7 +30,6 @@ class MusicSessionService(
 
     private val callback = MusicSessionCallback(scope = scope, getQueueUseCase = getQueueUseCase)
 
-    private lateinit var musicQueueUpdateListener: MusicQueueUpdateListener
 
     private var mediaController: MediaController? = null
 
@@ -49,15 +41,10 @@ class MusicSessionService(
         val player = ExoPlayer
             .Builder(this)
             .build()
-            .apply {
-                musicQueueUpdateListener = MusicQueueUpdateListener(
-                    scope = scope,
-                    setQueueUseCase = setQueueUseCase,
-                    clearQueueUseCase = clearQueueUseCase,
-                    unknownText = resources.getString(R.string.unknown),
-                )
-                addListener(musicQueueUpdateListener)
-            }
+        val musicPlayer = MusicPlayerController(
+            player = player,
+            scope = scope,
+        )
 
         val mainActivityIntent = Intent(this, MainActivity::class.java)
         val sessionActivity = PendingIntent.getActivity(
@@ -69,21 +56,11 @@ class MusicSessionService(
 
         mediaLibrarySession =
             MediaLibrarySession
-                .Builder(this, player, callback)
+                .Builder(this, musicPlayer, callback)
                 .setSessionActivity(sessionActivity)
                 .build()
 
         createMediaController()
-
-        scope.launch {
-            val queue = getQueueUseCase().toMedaItemsWithStartPosition()
-            withContext(Dispatchers.Main) {
-                mediaLibrarySession?.player?.apply {
-                    setMediaItems(queue.mediaItems, queue.startIndex, queue.startPositionMs)
-                    prepare()
-                }
-            }
-        }
     }
 
     private fun createMediaController() {
@@ -100,7 +77,6 @@ class MusicSessionService(
     override fun onDestroy() {
         mediaLibrarySession?.run {
             mediaController?.release()
-            player.removeListener(musicQueueUpdateListener)
             player.release()
             release()
             mediaLibrarySession = null

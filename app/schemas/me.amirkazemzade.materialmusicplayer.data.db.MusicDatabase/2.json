@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "c07b5c4a26a388d94644f4f0e320b9c7",
+    "identityHash": "492c96872e64f7744c003e7666063758",
     "entities": [
       {
         "tableName": "VersionEntity",
@@ -38,8 +38,14 @@
       },
       {
         "tableName": "MusicEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`title` TEXT, `artist` TEXT, `album` TEXT, `filePath` TEXT NOT NULL, `dateAdded` TEXT, `dateModified` TEXT, `duration` TEXT, `genre` TEXT, `year` TEXT, `artworkThumbnail` BLOB, `uri` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT, `artist` TEXT, `album` TEXT, `filePath` TEXT NOT NULL, `dateAdded` TEXT, `dateModified` TEXT, `duration` TEXT, `genre` TEXT, `year` TEXT, `artworkThumbnail` BLOB, `uri` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "title",
             "columnName": "title",
@@ -105,16 +111,10 @@
             "columnName": "uri",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
           }
         ],
         "primaryKey": {
-          "autoGenerate": true,
+          "autoGenerate": false,
           "columnNames": [
             "id"
           ]
@@ -123,7 +123,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "QueueEntity",
+        "tableName": "QueueDataEntity",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `currentIndex` INTEGER NOT NULL, `currentPositionMs` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -156,36 +156,24 @@
       },
       {
         "tableName": "QueueItemEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `queueId` INTEGER NOT NULL, `title` TEXT NOT NULL, `artist` TEXT NOT NULL, `uri` TEXT NOT NULL, FOREIGN KEY(`queueId`) REFERENCES `QueueEntity`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`musicId` INTEGER NOT NULL, `order` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`musicId`) REFERENCES `MusicEntity`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
+          {
+            "fieldPath": "musicId",
+            "columnName": "musicId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "order",
+            "columnName": "order",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "queueId",
-            "columnName": "queueId",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "title",
-            "columnName": "title",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "artist",
-            "columnName": "artist",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "uri",
-            "columnName": "uri",
-            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -195,14 +183,24 @@
             "id"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_QueueItemEntity_musicId",
+            "unique": false,
+            "columnNames": [
+              "musicId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_QueueItemEntity_musicId` ON `${TABLE_NAME}` (`musicId`)"
+          }
+        ],
         "foreignKeys": [
           {
-            "table": "QueueEntity",
+            "table": "MusicEntity",
             "onDelete": "CASCADE",
             "onUpdate": "CASCADE",
             "columns": [
-              "queueId"
+              "musicId"
             ],
             "referencedColumns": [
               "id"
@@ -214,7 +212,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c07b5c4a26a388d94644f4f0e320b9c7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '492c96872e64f7744c003e7666063758')"
     ]
   }
 }
