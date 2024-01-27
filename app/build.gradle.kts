@@ -71,7 +71,7 @@ room {
 detekt {
     parallel = true
     dependencies {
-        detektPlugins(libs.twitterDetektPlugin)
+        detektPlugins(libs.composeRulesPlugin.detekt)
     }
     config.setFrom("src/main/java/me/amirkazemzade/materialmusicplayer/presentation/config/detekt/detekt.yml")
 }
