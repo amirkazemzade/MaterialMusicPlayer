@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -16,8 +15,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import me.amirkazemzade.materialmusicplayer.R
 import me.amirkazemzade.materialmusicplayer.domain.model.Status
-import me.amirkazemzade.materialmusicplayer.presentation.common.ErrorBox
+import me.amirkazemzade.materialmusicplayer.presentation.common.components.CenteredNote
+import me.amirkazemzade.materialmusicplayer.presentation.common.components.ErrorBox
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.components.MusicListContent
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.events.MusicListEvent
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.states.MusicListState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -28,9 +30,10 @@ fun MusicList(
 ) {
     val mediaControllerState = viewModel.musicPlayerControllerState.collectAsStateWithLifecycle()
     val musicListState = viewModel.state.collectAsStateWithLifecycle()
+
     Box(
-        contentAlignment = Alignment.Center,
         modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
     ) {
         when (val musicList = musicListState.value) {
             is MusicListState.Error -> ErrorBox(
@@ -61,8 +64,11 @@ fun MusicList(
                     }
                 }
                 if (musicList.musics.isEmpty()) {
-                    NoMusicFound(
-                        modifier = Modifier.padding(contentPadding),
+                    CenteredNote(
+                        modifier = Modifier
+                            .padding(contentPadding)
+                            .fillMaxSize(),
+                        note = stringResource(R.string.no_music_found),
                     )
                 } else {
                     MusicListContent(
@@ -100,11 +106,3 @@ fun MusicList(
 }
 
 
-@Composable
-private fun NoMusicFound(
-    modifier: Modifier = Modifier,
-) {
-    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = stringResource(R.string.no_music_found))
-    }
-}

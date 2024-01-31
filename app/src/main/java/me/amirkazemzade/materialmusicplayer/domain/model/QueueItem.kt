@@ -16,3 +16,9 @@ data class QueueItemWithData(
     val artist: String?,
     val id: Long = 0,
 )
+
+data class QueueItemWithMusic(
+    val music: MusicFile,
+    val order: Int,
+    val id: Long = 0,
+)

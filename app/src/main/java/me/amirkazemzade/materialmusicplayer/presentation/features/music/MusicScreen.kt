@@ -15,8 +15,8 @@ fun MusicScreen(
         modifier = modifier,
     ) { innerPadding, contentModifier ->
         MusicList(
-            contentPadding = innerPadding,
             modifier = contentModifier,
+            contentPadding = innerPadding,
         )
     }
 }

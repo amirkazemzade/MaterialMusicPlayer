@@ -1,4 +1,4 @@
-package me.amirkazemzade.materialmusicplayer.presentation.common
+package me.amirkazemzade.materialmusicplayer.presentation.common.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

@@ -15,6 +15,7 @@ import me.amirkazemzade.materialmusicplayer.data.mappers.toQueue
 import me.amirkazemzade.materialmusicplayer.data.service.MusicQueueUpdateListener
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import me.amirkazemzade.materialmusicplayer.domain.model.QueueItem
+import me.amirkazemzade.materialmusicplayer.domain.model.RepeatMode
 import me.amirkazemzade.materialmusicplayer.domain.usecase.QueueUseCases
 import org.koin.java.KoinJavaComponent.get
 
@@ -52,6 +53,12 @@ class MusicPlayerController(
 
     @OptIn(UnstableApi::class)
     private suspend fun setPlayerQueue() {
+        val isCommandsAvailable = withContext(Dispatchers.Main) {
+            player.isCommandAvailable(Player.COMMAND_CHANGE_MEDIA_ITEMS) &&
+                    player.isCommandAvailable(Player.COMMAND_PREPARE)
+        }
+        if (!isCommandsAvailable) return
+
         val queue = withContext(Dispatchers.IO) {
             queueUseCases.getQueueUseCase().toMedaItemsWithStartPosition()
         }
@@ -65,6 +72,11 @@ class MusicPlayerController(
     }
 
     fun play(musics: ImmutableList<MusicFile>, startIndex: Int = 0, startPositionMs: Long = 0) {
+        if (
+            !player.isCommandAvailable(Player.COMMAND_CHANGE_MEDIA_ITEMS) ||
+            !player.isCommandAvailable(Player.COMMAND_PREPARE)
+        ) return
+
         scope.launch {
             val queue = musics.toQueue(startIndex, startPositionMs)
             queueUseCases.setQueueUseCase(queue)
@@ -74,7 +86,13 @@ class MusicPlayerController(
         player.clearMediaItems()
         player.setMediaItems(playlist, startIndex, startPositionMs)
         player.prepare()
-        player.play()
+        onPlay()
+    }
+
+    fun play(index: Int) {
+        if (!player.isCommandAvailable(Player.COMMAND_SEEK_TO_MEDIA_ITEM)) return
+        player.seekTo(index, 0)
+        onPlay()
     }
 
     fun playNext(music: MusicFile) {
@@ -84,6 +102,9 @@ class MusicPlayerController(
     }
 
     fun playNext(musics: List<MusicFile>) {
+        if (musics.isEmpty()) return
+        if (musics.size == 1) playNext(musics.first())
+
         scope.launch {
             queueUseCases.addItemsToNextUseCase(musics, player.currentMediaItemIndex)
         }
@@ -96,20 +117,29 @@ class MusicPlayerController(
     }
 
     fun addToQueue(musics: List<MusicFile>) {
+        if (musics.isEmpty()) return
+        if (musics.size == 1) addToQueue(musics.first())
+
         scope.launch {
             queueUseCases.addItemsToEndUseCase(musics)
         }
     }
 
-    fun removeFromQueue(item: QueueItem) {
+    private fun removeFromQueue(id: Long) {
         scope.launch {
-            queueUseCases.removeItemFromQueueUseCase(item)
+            queueUseCases.removeItemFromQueueUseCase(id)
         }
     }
 
-    fun removeFromQueue(items: List<QueueItem>) {
+    fun removeFromQueue(ids: List<Long>) {
+        if (ids.isEmpty()) return
+        if (ids.size == 1) {
+            removeFromQueue(ids.first())
+            return
+        }
+
         scope.launch {
-            queueUseCases.removeItemsFromQueueUseCase(items)
+            queueUseCases.removeItemsFromQueueUseCase(ids)
         }
     }
 
@@ -128,22 +158,28 @@ class MusicPlayerController(
     }
 
     fun onNext() {
-        if (player.isCommandAvailable(Player.COMMAND_SEEK_TO_NEXT)) player.seekToNext()
+        if (!player.isCommandAvailable(Player.COMMAND_SEEK_TO_NEXT)) return
+        player.seekToNext()
     }
 
     fun onPrevious() {
-        if (player.isCommandAvailable(Player.COMMAND_SEEK_TO_PREVIOUS)) player.seekToPrevious()
+        if (!player.isCommandAvailable(Player.COMMAND_SEEK_TO_PREVIOUS)) return
+        player.seekToPrevious()
     }
 
     fun onSeekTo(positionMs: Long) {
-        if (player.isCommandAvailable(Player.COMMAND_SEEK_IN_CURRENT_MEDIA_ITEM)) player.seekTo(
-            positionMs
-        )
+        if (!player.isCommandAvailable(Player.COMMAND_SEEK_IN_CURRENT_MEDIA_ITEM)) return
+        player.seekTo(positionMs)
     }
 
     fun onShuffleChange(shuffleEnable: Boolean) {
-        if (player.isCommandAvailable(Player.COMMAND_SET_SHUFFLE_MODE)) player.shuffleModeEnabled =
-            shuffleEnable
+        if (!player.isCommandAvailable(Player.COMMAND_SET_SHUFFLE_MODE)) return
+        player.shuffleModeEnabled = shuffleEnable
+    }
+
+    fun onRepeatModeChange(repeatMode: RepeatMode) {
+        if (!player.isCommandAvailable(Player.COMMAND_SET_REPEAT_MODE)) return
+        player.repeatMode = repeatMode.numericValue
     }
 
     override fun release() {

@@ -113,6 +113,7 @@ class MusicControllerViewModel(
                 PlayerEvent.Previous -> controller.onPrevious()
                 is PlayerEvent.SeekTo -> controller.onSeekTo(event.positionMs)
                 is PlayerEvent.ShuffleChange -> controller.onShuffleChange(event.shuffleEnable)
+                is PlayerEvent.RepeatModeChange -> controller.onRepeatModeChange(event.repeatMode)
             }
         }
     }

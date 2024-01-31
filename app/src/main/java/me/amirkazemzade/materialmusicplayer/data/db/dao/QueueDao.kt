@@ -7,11 +7,12 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
+import me.amirkazemzade.materialmusicplayer.data.db.dto.QueueDataWithItemsDto
+import me.amirkazemzade.materialmusicplayer.data.db.dto.QueueItemWithMusicDto
+import me.amirkazemzade.materialmusicplayer.data.db.dto.QueueMetadataItemDto
+import me.amirkazemzade.materialmusicplayer.data.db.dto.QueueWithMetadataItemsDto
 import me.amirkazemzade.materialmusicplayer.data.db.entities.queue.QueueDataEntity
-import me.amirkazemzade.materialmusicplayer.data.db.entities.queue.QueueDataWithItems
 import me.amirkazemzade.materialmusicplayer.data.db.entities.queue.QueueItemEntity
-import me.amirkazemzade.materialmusicplayer.data.db.entities.queue.QueueMusicItem
-import me.amirkazemzade.materialmusicplayer.data.db.entities.queue.QueueWithMusicItems
 
 @Dao
 interface QueueDao {
@@ -34,29 +35,18 @@ interface QueueDao {
             WHERE QueueItemEntity.musicId = MusicEntity.id
         """
     )
-    fun getQueueMusicItems(): List<QueueMusicItem>
-
-    @Query(
-        """
-            SELECT QueueItemEntity.id as id, 
-            MusicEntity.id as musicId, 
-            QueueItemEntity.`order` as `order`, 
-            MusicEntity.uri as uri, 
-            MusicEntity.title as title, 
-            MusicEntity.artist as artist 
-            FROM QueueItemEntity 
-            LEFT JOIN MusicEntity 
-            WHERE QueueItemEntity.musicId = MusicEntity.id
-        """
-    )
-    fun getQueueMusicItemsAsFlow(): Flow<List<QueueMusicItem>>
+    fun getQueueMetadataItems(): List<QueueMetadataItemDto>
 
     @Transaction
-    fun getQueueWithMusics(): QueueWithMusicItems? {
+    @Query("SELECT * FROM QueueItemEntity")
+    fun getQueueItemsWithMusicAsFlow(): Flow<List<QueueItemWithMusicDto>>
+
+    @Transaction
+    fun getQueueWithMusics(): QueueWithMetadataItemsDto? {
         val data = getQueueData()
-        val items = getQueueMusicItems()
+        val items = getQueueMetadataItems()
         if (data == null) return null
-        return QueueWithMusicItems(
+        return QueueWithMetadataItemsDto(
             queue = data,
             items = items,
         )
@@ -100,12 +90,12 @@ interface QueueDao {
     }
 
     @Transaction
-    suspend fun setQueue(queueDataWithItems: QueueDataWithItems) {
+    suspend fun setQueue(queueDataWithItemsDto: QueueDataWithItemsDto) {
         deleteQueue()
         deleteQueueItems()
 
-        insertQueueData(queueDataWithItems.data)
-        insertQueueItems(queueDataWithItems.items)
+        insertQueueData(queueDataWithItemsDto.data)
+        insertQueueItems(queueDataWithItemsDto.items)
     }
 
     @Query("UPDATE QueueItemEntity SET `order`=:order WHERE id = :id")
@@ -151,21 +141,27 @@ interface QueueDao {
     }
 
     @Transaction
-    suspend fun removeItemFromQueue(item: QueueItemEntity) {
-        deleteQueueItem(item)
-        shiftUpOrders(item.order)
+    suspend fun removeItemFromQueue(id: Long) {
+        val order = getQueueItemOrder(id)
+        deleteQueueItem(id)
+        shiftUpOrders(order)
     }
 
     @Transaction
-    suspend fun removeItemsFromQueue(items: List<QueueItemEntity>) {
-        items.forEachIndexed { index, item ->
-            val fromOrder = item.order
-            val toOrder = if (index != items.lastIndex) items[index + 1].order else null
+    suspend fun removeItemsFromQueue(ids: List<Long>) {
+        var fromOrder = getQueueItemOrder(ids.first())
+        var toOrder: Int? = null
+        ids.forEachIndexed { index, item ->
+            if (index != 0) {
+                fromOrder = toOrder!!
+            }
+            toOrder = if (index != ids.lastIndex) getQueueItemOrder(ids[index + 1]) else null
+
             deleteQueueItem(item)
-            if (toOrder == null) {
-                shiftUpOrders(fromOrder)
+            if (toOrder != null) {
+                shiftUpOrders(fromOrder, toOrder!!)
             } else {
-                shiftUpOrders(fromOrder, toOrder)
+                shiftUpOrders(fromOrder)
             }
         }
     }

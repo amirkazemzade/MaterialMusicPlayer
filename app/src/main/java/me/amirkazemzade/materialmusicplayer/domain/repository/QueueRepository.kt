@@ -1,16 +1,17 @@
 package me.amirkazemzade.materialmusicplayer.domain.repository
 
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import me.amirkazemzade.materialmusicplayer.domain.model.Queue
 import me.amirkazemzade.materialmusicplayer.domain.model.QueueData
-import me.amirkazemzade.materialmusicplayer.domain.model.QueueItem
-import me.amirkazemzade.materialmusicplayer.domain.model.QueueItemWithData
+import me.amirkazemzade.materialmusicplayer.domain.model.QueueItemWithMusic
+import me.amirkazemzade.materialmusicplayer.domain.model.Status
 
 interface QueueRepository {
 
     suspend fun getQueue(): Queue
 
-    fun getQueueItemsFlow(): Flow<List<QueueItemWithData>>
+    fun getQueueItemsWithMusicFlow(): Flow<Status<ImmutableList<QueueItemWithMusic>>>
 
     suspend fun setQueue(queue: Queue)
 
@@ -26,9 +27,9 @@ interface QueueRepository {
 
     suspend fun addItemsToEndOfQueue(musicIds: List<Long>)
 
-    suspend fun removeItemFromQueue(item: QueueItem)
+    suspend fun removeItemFromQueue(id: Long)
 
-    suspend fun removeItemsFromQueue(items: List<QueueItem>)
+    suspend fun removeItemsFromQueue(ids: List<Long>)
 
     suspend fun reorderItemInQueue(id: Long, newOrder: Int)
 }

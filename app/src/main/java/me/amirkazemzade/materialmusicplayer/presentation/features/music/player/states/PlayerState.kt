@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.common.util.Util
+import me.amirkazemzade.materialmusicplayer.domain.model.RepeatMode
 
 @Immutable
 data class PlayerState(
@@ -15,6 +16,7 @@ data class PlayerState(
     val mediaMetadata: MediaMetadata? = null,
     val isCurrentMediaItemSeekable: Boolean = false,
     val shuffleModeEnabled: Boolean = false,
+    val repeatMode: RepeatMode = RepeatMode.Off,
 )
 
 fun Player?.toPlayerState(): PlayerState {
@@ -22,6 +24,9 @@ fun Player?.toPlayerState(): PlayerState {
     val isPlaying = this?.isPlaying
     val isAvailable =
         this != null && (mediaMetadata != null || isPlaying == true) && !this.currentTimeline.isEmpty
+    val repeatModeNumericValue = this?.repeatMode
+    val repeatMode =
+        repeatModeNumericValue?.let { RepeatMode.fromNumericValue(repeatModeNumericValue) }
 
     return PlayerState(
         isAvailable = isAvailable,
@@ -32,5 +37,6 @@ fun Player?.toPlayerState(): PlayerState {
         mediaMetadata = mediaMetadata,
         isCurrentMediaItemSeekable = this?.isCurrentMediaItemSeekable ?: false,
         shuffleModeEnabled = this?.shuffleModeEnabled ?: false,
+        repeatMode = repeatMode ?: RepeatMode.Off,
     )
 }

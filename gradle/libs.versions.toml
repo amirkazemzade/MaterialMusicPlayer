@@ -3,27 +3,26 @@ accompanistPermissions = "0.33.2-alpha"
 activityCompose = "1.8.2"
 agp = "8.2.0"
 composeBom = "2023.10.01"
-composeUi = "1.6.0-beta03"
+composeUi = "1.6.0-rc01"
 composeRules = "0.3.11"
 detekt = "1.23.4"
 espressoCore = "3.5.1"
 haze = "0.4.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
-ktx = "1.12.0"
 koinAndroid = "3.5.0"
 kotlin = "1.9.21"
 kotlinxCollectionsImmutable = "0.3.6"
 kotlinxDatetime = "0.5.0"
 ksp = "1.9.21-1.0.15"
 ktor = "2.3.6"
+ktx = "1.12.0"
 lifecycle = "2.6.2"
+material = "1.11.0"
 #noinspection GradleDependency
 material3 = "1.2.0-alpha10"
-material = "1.11.0"
 materialIconsExtended = "1.5.4"
-media3Ui = "1.2.0"
-media3Exoplayer = "1.2.0"
+media3 = "1.2.1"
 navigationCompose = "2.7.6"
 paletteKtx = "1.0.0"
 room = "2.6.1"
@@ -75,10 +74,10 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-palette-ktx = { group = "androidx.palette", name = "palette-ktx", version.ref = "paletteKtx" }
 
 # media3
-androidx-media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3Exoplayer" }
-androidx-media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3Ui" }
-androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3Exoplayer" }
-androidx-media3-session = { group = "androidx.media3", name = "media3-session", version.ref = "media3Exoplayer" }
+androidx-media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3" }
+androidx-media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3" }
+androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3" }
+androidx-media3-session = { group = "androidx.media3", name = "media3-session", version.ref = "media3" }
 
 # navigation
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }

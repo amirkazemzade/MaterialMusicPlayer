@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -51,7 +52,10 @@ fun MusicPlayerBottomSheetContent(
         mutableStateOf(minHeight.dp)
     }
 
-    val isExpanded = state.currentValue == SheetValue.Expanded
+    var showQueue by rememberSaveable {
+        mutableStateOf(false)
+    }
+
 
     LaunchedEffect(key1 = state.targetValue) {
         while (isActive && state.targetValue != state.currentValue) {
@@ -64,6 +68,8 @@ fun MusicPlayerBottomSheetContent(
             delay(MaterialMusicPlayerDefaults.SCREEN_UPDATE_INTERVAL_MS)
         }
 
+        val isExpanded = state.currentValue == SheetValue.Expanded
+
         bottomSheetHeight =
             if (isExpanded) maxHeight.dp else minHeight.dp
     }
@@ -71,16 +77,19 @@ fun MusicPlayerBottomSheetContent(
     val fullScreenVisibility = (bottomSheetHeight.value - minHeight) / (maxHeight - minHeight)
 
     Box(modifier = modifier) {
-        if (state.targetValue != state.currentValue) {
+        if (fullScreenVisibility > 0)
             FullScreenPlayer(
                 modifier = Modifier
                     .alpha(fullScreenVisibility),
                 playerState = playerState,
                 timelineStateFlow = timelineStateFlow,
+                showQueue = showQueue,
                 onMinimize = { scope.launch { state.partialExpand() } },
                 onEvent = onEvent,
-                onFavoriteChange = { /* TODO: implement favorites */ },
+                onToggleFavorite = { /* TODO: implement favorites */ },
+                onToggleQueue = { toggleValue -> showQueue = toggleValue },
             )
+        if (fullScreenVisibility < 1)
             MiniPlayer(
                 modifier = Modifier
                     .alpha(1 - fullScreenVisibility),
@@ -88,20 +97,6 @@ fun MusicPlayerBottomSheetContent(
                 onExpand = { scope.launch { state.expand() } },
                 onEvent = onEvent,
             )
-        } else if (isExpanded) {
-            FullScreenPlayer(
-                playerState = playerState,
-                timelineStateFlow = timelineStateFlow,
-                onMinimize = { scope.launch { state.partialExpand() } },
-                onEvent = onEvent,
-                onFavoriteChange = { /* TODO: implement favorites */ },
-            )
-        } else {
-            MiniPlayer(
-                playerState = playerState,
-                onExpand = { scope.launch { state.expand() } },
-                onEvent = onEvent,
-            )
-        }
+
     }
 }

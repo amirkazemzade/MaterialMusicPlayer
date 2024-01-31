@@ -1,8 +1,8 @@
-package me.amirkazemzade.materialmusicplayer.data.db.entities.queue
+package me.amirkazemzade.materialmusicplayer.data.db.dto
 
 import android.net.Uri
 
-data class QueueMusicItem(
+data class QueueMetadataItemDto(
     val id: Long,
     val musicId: Long,
     val order: Int,

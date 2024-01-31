@@ -23,4 +23,14 @@
     <string name="title">Title</string>
     <string name="artist">Artist</string>
     <string name="no_music_found">No Music Found!</string>
+    <string name="drag_handle">Drag Handle</string>
+    <string name="item_selected">1 item selected</string>
+    <string name="items_selected">%1$d items selected</string>
+    <string name="remove_from_queue">Remove From Queue</string>
+    <string name="clear_selection">Clear Selection</string>
+    <string name="queue_is_empty">Queue Is Empty!</string>
+    <string name="share">Share</string>
+    <string name="repeat_off">Repeat Off</string>
+    <string name="repeat_one">Repeat One</string>
+    <string name="repeat_all">Repeat All</string>
 </resources>

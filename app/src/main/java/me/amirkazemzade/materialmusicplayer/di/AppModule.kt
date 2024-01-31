@@ -13,9 +13,11 @@ import me.amirkazemzade.materialmusicplayer.domain.source.RemoteMusicSource
 import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMusicListUseCase
 import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMusicPlayerControllerUseCase
 import me.amirkazemzade.materialmusicplayer.domain.usecase.QueueUseCases
+import me.amirkazemzade.materialmusicplayer.domain.usecase.queue.GetQueueListAsFlowUseCase
 import me.amirkazemzade.materialmusicplayer.domain.usecase.queue.GetQueueUseCase
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.MusicControllerViewModel
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.MusicListViewModel
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.queue.MusicQueueListViewModel
 import me.amirkazemzade.materialmusicplayer.presentation.navigation.Navigator
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
@@ -49,9 +51,11 @@ val appModule =
         singleOf(::GetMusicListUseCase)
         singleOf(::GetMusicPlayerControllerUseCase)
         singleOf(::GetQueueUseCase)
+        singleOf(::GetQueueListAsFlowUseCase)
         singleOf(::QueueUseCases)
 
         // ViewModels
         viewModelOf(::MusicControllerViewModel)
         viewModelOf(::MusicListViewModel)
+        viewModelOf(::MusicQueueListViewModel)
     }

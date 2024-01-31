@@ -1,8 +1,11 @@
 package me.amirkazemzade.materialmusicplayer.presentation.common.extensions
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
@@ -84,12 +87,27 @@ fun Dp.takeIfZero(other: Dp): Dp = if (this != 0.dp) this else other
 
 @Composable
 operator fun PaddingValues.plus(other: PaddingValues): PaddingValues {
+
+    val systemBar = WindowInsets.systemBars.asPaddingValues()
     val layoutDirection = LocalLayoutDirection.current
+    val start =
+        calculateStartPadding(layoutDirection) +
+                other.calculateStartPadding(layoutDirection) -
+                systemBar.calculateStartPadding(layoutDirection)
+
+    val top = calculateTopPadding() + other.calculateTopPadding() - systemBar.calculateTopPadding()
+    val end =
+        calculateEndPadding(layoutDirection) +
+                other.calculateEndPadding(layoutDirection) -
+                systemBar.calculateEndPadding(layoutDirection)
+    val bottom =
+        calculateBottomPadding() + other.calculateBottomPadding() - systemBar.calculateBottomPadding()
+
     return PaddingValues(
-        start = calculateStartPadding(layoutDirection) + other.calculateStartPadding(layoutDirection),
-        top = calculateTopPadding() + other.calculateTopPadding(),
-        end = calculateEndPadding(layoutDirection) + other.calculateEndPadding(layoutDirection),
-        bottom = calculateBottomPadding() + other.calculateBottomPadding(),
+        start = start,
+        top = top,
+        end = end,
+        bottom = bottom,
     )
 }
 

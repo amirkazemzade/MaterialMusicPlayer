@@ -8,11 +8,13 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import me.amirkazemzade.materialmusicplayer.domain.model.DefaultSortType
 import me.amirkazemzade.materialmusicplayer.domain.model.SortOrder
-import me.amirkazemzade.materialmusicplayer.domain.model.SortType
 import me.amirkazemzade.materialmusicplayer.domain.model.StatusCore
 import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMusicListUseCase
 import me.amirkazemzade.materialmusicplayer.domain.usecase.GetMusicPlayerControllerUseCase
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.events.MusicListEvent
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.states.MusicListState
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MusicListViewModel(
@@ -24,7 +26,7 @@ class MusicListViewModel(
         get() = musicPlayerControllerState.value.data
 
     private val _refresh = MutableStateFlow(false)
-    private val _sortType = MutableStateFlow(SortType.DATE_ADDED)
+    private val _sortType = MutableStateFlow(DefaultSortType.DATE_ADDED)
     private val _sortOrder = MutableStateFlow(SortOrder.DESC)
     private val _musicListState =
         combine(_refresh, _sortType, _sortOrder) { _, sortType, sortOrder ->

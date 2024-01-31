@@ -60,23 +60,6 @@ fun MaterialMusicPlayerTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-//                window.setDecorFitsSystemWindows(false)
-//                ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
-//                    val insets = windowInsets.getInsets(
-//                        WindowInsetsCompat.Type.systemGestures()
-//                    )
-//                    view.updatePadding(
-//                        insets.left,
-//                        insets.top,
-//                        insets.right,
-//                        insets.bottom
-//                    )
-//                    WindowInsetsCompat.CONSUMED
-//                }
-//            }
-//            window.statusBarColor = Color.Transparent.toArgb()
-//            window.navigationBarColor = Color.Transparent.toArgb()
             val insetsController = WindowCompat.getInsetsController(window, view)
             insetsController.isAppearanceLightStatusBars = !darkTheme
             insetsController.isAppearanceLightNavigationBars = !darkTheme
@@ -86,6 +69,7 @@ fun MaterialMusicPlayerTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
+        shapes = Shapes,
         content = content,
     )
 }

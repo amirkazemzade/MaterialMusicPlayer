@@ -6,17 +6,18 @@ import androidx.media3.common.MediaMetadata
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaSession
 import kotlinx.collections.immutable.toImmutableList
+import me.amirkazemzade.materialmusicplayer.data.db.dto.QueueDataWithItemsDto
+import me.amirkazemzade.materialmusicplayer.data.db.dto.QueueItemWithMusicDto
+import me.amirkazemzade.materialmusicplayer.data.db.dto.QueueMetadataItemDto
+import me.amirkazemzade.materialmusicplayer.data.db.dto.QueueWithMetadataItemsDto
 import me.amirkazemzade.materialmusicplayer.data.db.entities.queue.QueueDataEntity
-import me.amirkazemzade.materialmusicplayer.data.db.entities.queue.QueueDataWithItems
 import me.amirkazemzade.materialmusicplayer.data.db.entities.queue.QueueItemEntity
-import me.amirkazemzade.materialmusicplayer.data.db.entities.queue.QueueMusicItem
-import me.amirkazemzade.materialmusicplayer.data.db.entities.queue.QueueWithMusicItems
 import me.amirkazemzade.materialmusicplayer.domain.model.Queue
 import me.amirkazemzade.materialmusicplayer.domain.model.QueueData
-import me.amirkazemzade.materialmusicplayer.domain.model.QueueItem
 import me.amirkazemzade.materialmusicplayer.domain.model.QueueItemWithData
+import me.amirkazemzade.materialmusicplayer.domain.model.QueueItemWithMusic
 
-fun Queue.toQueueDataWithItems() = QueueDataWithItems(
+fun Queue.toQueueDataWithItems() = QueueDataWithItemsDto(
     data = QueueDataEntity(
         currentIndex = currentIndex,
         currentPositionMs = currentPositionMs,
@@ -35,7 +36,7 @@ fun QueueData.toQueueEntity() = QueueDataEntity(
     currentPositionMs = currentPositionMs,
 )
 
-fun QueueWithMusicItems?.toQueue(): Queue {
+fun QueueWithMetadataItemsDto?.toQueue(): Queue {
     if (this == null) {
         return Queue()
     }
@@ -46,10 +47,19 @@ fun QueueWithMusicItems?.toQueue(): Queue {
     )
 }
 
-fun Iterable<QueueMusicItem>.mapToQueueItemsWithData() =
+fun Iterable<QueueMetadataItemDto>.mapToQueueItemsWithData() =
     map { item -> item.toQueueItemWithData() }.toImmutableList()
 
-fun QueueMusicItem.toQueueItemWithData() =
+fun Iterable<QueueItemWithMusicDto>.mapToQueueItemsWithMusic() =
+    map { item -> item.toQueueItemWithMusic() }.toImmutableList()
+
+private fun QueueItemWithMusicDto.toQueueItemWithMusic() = QueueItemWithMusic(
+    id = queueItem.id,
+    order = queueItem.order,
+    music = music.toMusicFile(),
+)
+
+fun QueueMetadataItemDto.toQueueItemWithData() =
     QueueItemWithData(
         id = id,
         musicId = musicId,
@@ -58,12 +68,6 @@ fun QueueMusicItem.toQueueItemWithData() =
         artist = artist,
         uri = uri,
     )
-
-fun QueueItem.toQueueItemEntity() = QueueItemEntity(
-    musicId = musicId,
-    order = order,
-    id = id
-)
 
 @OptIn(UnstableApi::class)
 fun Queue.toMedaItemsWithStartPosition(): MediaSession.MediaItemsWithStartPosition {

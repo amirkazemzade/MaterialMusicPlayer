@@ -5,9 +5,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.mapLatest
+import me.amirkazemzade.materialmusicplayer.domain.model.DefaultSortType
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import me.amirkazemzade.materialmusicplayer.domain.model.SortOrder
-import me.amirkazemzade.materialmusicplayer.domain.model.SortType
 import me.amirkazemzade.materialmusicplayer.domain.model.StatusCore
 import me.amirkazemzade.materialmusicplayer.domain.model.StatusGeneric
 import me.amirkazemzade.materialmusicplayer.domain.repository.MusicRepository
@@ -18,12 +18,12 @@ class GetMusicListUseCase(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend operator fun invoke(
-        sortType: SortType,
+        sortType: DefaultSortType,
         sortOrder: SortOrder,
     ): Flow<StatusCore<ImmutableList<MusicFile>, String, Int>> = when (sortType) {
-        SortType.DATE_ADDED -> repository.getMusicListOrderedByDateAdded(sortOrder.isAscending)
-        SortType.TITLE -> repository.getMusicListOrderedByTitle(sortOrder.isAscending)
-        SortType.ARTIST -> repository.getMusicListOrderedByArtist(sortOrder.isAscending)
+        DefaultSortType.DATE_ADDED -> repository.getMusicListOrderedByDateAdded(sortOrder.isAscending)
+        DefaultSortType.TITLE -> repository.getMusicListOrderedByTitle(sortOrder.isAscending)
+        DefaultSortType.ARTIST -> repository.getMusicListOrderedByArtist(sortOrder.isAscending)
     }.mapLatest<StatusGeneric<ImmutableList<MusicFile>, Int>, StatusCore<ImmutableList<MusicFile>, String, Int>> { value ->
         when (value) {
             is StatusGeneric.Loading -> StatusCore.Loading(
