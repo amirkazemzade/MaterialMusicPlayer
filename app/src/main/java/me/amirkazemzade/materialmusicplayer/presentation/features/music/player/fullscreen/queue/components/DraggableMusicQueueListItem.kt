@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import me.amirkazemzade.materialmusicplayer.domain.model.QueueItemWithMusic
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.queue.events.MusicQueueListEvent
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.queue.extentions.updateListDraggableItemBounds
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.queue.states.DraggableListItemState
 import kotlin.math.roundToInt
 
@@ -24,11 +25,12 @@ fun DraggableMusicQueueListItem(
     height: Dp,
     index: Int,
     queueItem: QueueItemWithMusic,
+    totalItemsCount: Int,
     draggingItemIndex: Int?,
     currentPositionIndex: Int?,
     onDragStart: CoroutineScope.(startedPosition: Offset) -> Unit,
     onDragStopped: CoroutineScope.(velocity: Float) -> Unit,
-    onUpdateCurrentPosition: (Int) -> Unit,
+    updateCurrentPosition: (Int) -> Unit,
     onEvent: (event: MusicQueueListEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -49,7 +51,7 @@ fun DraggableMusicQueueListItem(
         val positionChangeAmount = (translationY.value / heightPx).roundToInt()
         val newPositionIndex = positionChangeAmount + (draggingItemIndex)
         if (newPositionIndex != currentPositionIndex) {
-            onUpdateCurrentPosition(newPositionIndex)
+            updateCurrentPosition(newPositionIndex)
         }
     }
 
@@ -76,14 +78,18 @@ fun DraggableMusicQueueListItem(
         draggableState = draggableState,
         isDragging = draggingItemIndex == index,
         onClick = { onEvent(MusicQueueListEvent.Play(index)) },
-        onDragStart = onDragStart,
+        onDragStart = { offset ->
+            translationY.updateListDraggableItemBounds(index, totalItemsCount, heightPx)
+            onDragStart(offset)
+        },
         onDragStopped = { velocity ->
             scope.launch {
                 if (draggingItemIndex != null && currentPositionIndex != null) {
-                    translationY.animateTo((currentPositionIndex - draggingItemIndex) * heightPx)
+                    val positionDifferenceAmount = currentPositionIndex - draggingItemIndex
+                    translationY.animateTo(positionDifferenceAmount * heightPx)
                 }
+                onDragStopped(velocity)
             }
-            onDragStopped(velocity)
         },
         modifier = modifier
             .height(height)

@@ -1,19 +1,21 @@
 package me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.queue.components
 
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import me.amirkazemzade.materialmusicplayer.domain.model.QueueItemWithMusic
-import me.amirkazemzade.materialmusicplayer.presentation.common.extensions.withRepositionedElement
+import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.queue.DraggableListViewModel
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.queue.events.MusicQueueListEvent
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MusicQueueDraggableList(
     items: ImmutableList<QueueItemWithMusic>,
@@ -21,54 +23,39 @@ fun MusicQueueDraggableList(
     modifier: Modifier = Modifier,
 ) {
     val itemHeight = 64.dp
-
-    var lazyListItems by remember {
-        mutableStateOf(items)
-    }
-
-    var draggingItemIndex by remember {
-        mutableStateOf<Int?>(null)
-    }
-    var currentPositionIndex by remember {
-        mutableStateOf<Int?>(null)
-    }
+    val viewModel = DraggableListViewModel(items)
+    val state by viewModel.state.collectAsState()
+    val lazyListState = rememberLazyListState()
 
     LazyColumn(
+        state = lazyListState,
         modifier = modifier
     ) {
         itemsIndexed(
-            items = lazyListItems,
+            items = state.items,
             key = { index, item -> if (index == 0) 0 else item.id },
         ) { index, queueItem ->
 
             DraggableMusicQueueListItem(
                 index = index,
                 height = itemHeight,
-                draggingItemIndex = draggingItemIndex,
-                currentPositionIndex = currentPositionIndex,
+                totalItemsCount = state.items.size,
+                draggingItemIndex = state.draggingItemIndex,
+                currentPositionIndex = state.currentPositionIndex,
                 queueItem = queueItem,
                 onEvent = onEvent,
                 onDragStart = {
-                    draggingItemIndex = index
+                    viewModel.onDragStart(index)
                 },
                 onDragStopped = {
-                    val fromIndex = draggingItemIndex?.coerceAtLeast(0)
-                    val toIndex = currentPositionIndex?.coerceAtMost(lazyListItems.lastIndex)
-
-                    if (fromIndex == null || toIndex == null) return@DraggableMusicQueueListItem
-
-                    val newListItems = lazyListItems
-                        .withRepositionedElement(
-                            fromIndex = fromIndex,
-                            toIndex = toIndex,
-                        )
-                    lazyListItems = newListItems
-                    draggingItemIndex = null
-                    currentPositionIndex = null
+                    viewModel.onDragStopped()
                 },
-                onUpdateCurrentPosition = { newPosition ->
-                    currentPositionIndex = newPosition
+                updateCurrentPosition = { newPosition ->
+                    viewModel.updateCurrentPositionIndex(newPosition)
                 },
+                modifier = Modifier
+                    // removing default item placement animation due to conflict with custom item placement animation
+                    .animateItemPlacement(animationSpec = tween(durationMillis = 0))
             )
         }
     }
