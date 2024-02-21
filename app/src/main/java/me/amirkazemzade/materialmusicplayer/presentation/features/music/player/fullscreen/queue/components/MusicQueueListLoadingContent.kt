@@ -6,7 +6,9 @@ import androidx.compose.ui.Modifier
 import me.amirkazemzade.materialmusicplayer.presentation.common.components.CenteredCircularLoading
 
 @Composable
-fun MusicQueueListLoadingContent(modifier: Modifier) {
+fun MusicQueueListLoadingContent(
+    modifier: Modifier = Modifier,
+) {
     CenteredCircularLoading(
         modifier = modifier.fillMaxSize()
     )

@@ -143,7 +143,7 @@ private fun FullScreenPlayerContent(
 @Preview
 @PreviewLightDark
 @Composable
-fun FullScreenPlayerPreview() {
+private fun FullScreenPlayerPreview() {
     val timelineMock = MusicTimelineGeneratorMock()
 
     val position = timelineMock.state.collectAsState()

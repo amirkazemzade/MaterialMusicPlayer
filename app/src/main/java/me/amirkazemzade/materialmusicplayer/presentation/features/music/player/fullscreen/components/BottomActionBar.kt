@@ -71,7 +71,7 @@ fun BottomActionBar(
 
 @Preview
 @Composable
-fun BottomActionBarPreview() {
+private fun BottomActionBarPreview() {
     MaterialMusicPlayerTheme {
         Surface {
             BottomActionBar(

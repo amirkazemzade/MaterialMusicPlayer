@@ -30,7 +30,7 @@ Compose:
     # -- You can optionally add your own Modifier types
     # customModifiers: BananaModifier,PotatoModifier
   ModifierComposable:
-    active: true
+    active: false
     # -- You can optionally add your own Modifier types
     # customModifiers: BananaModifier,PotatoModifier
   ModifierMissing:

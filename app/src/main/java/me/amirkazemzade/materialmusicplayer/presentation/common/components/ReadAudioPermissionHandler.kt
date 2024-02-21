@@ -84,7 +84,7 @@ private fun ReadAudioPermissionRequestPage(
 
 @Preview
 @Composable
-fun ReadAudioPermissionRequestPagePreview() {
+private fun ReadAudioPermissionRequestPagePreview() {
     MaterialMusicPlayerTheme {
         ReadAudioPermissionRequestPage(
             modifier = Modifier,
@@ -96,7 +96,7 @@ fun ReadAudioPermissionRequestPagePreview() {
 
 @Preview
 @Composable
-fun ReadStoragePermissionRequestPagePreview() {
+private fun ReadStoragePermissionRequestPagePreview() {
     MaterialMusicPlayerTheme {
         ReadAudioPermissionRequestPage(
             modifier = Modifier,

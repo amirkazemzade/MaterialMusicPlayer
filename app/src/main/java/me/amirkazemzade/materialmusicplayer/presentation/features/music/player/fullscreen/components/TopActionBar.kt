@@ -53,7 +53,7 @@ fun TopActionBar(
 
 @Preview
 @Composable
-fun TopActionBarPreview() {
+private fun TopActionBarPreview() {
     MaterialMusicPlayerTheme {
         Surface {
             TopActionBar(
