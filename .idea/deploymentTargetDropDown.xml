@@ -2,20 +2,29 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="InstancePerTestExample">
+        <State />
+      </entry>
+      <entry key="MyTests">
+        <State />
+      </entry>
+      <entry key="QueueDaoTestK">
+        <State />
+      </entry>
       <entry key="app">
         <State>
-          <runningDeviceTargetSelectedWithDropDown>
+          <targetSelectedWithDropDown>
             <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
+              <type value="QUICK_BOOT_TARGET" />
               <deviceKey>
                 <Key>
-                  <type value="SERIAL_NUMBER" />
-                  <value value="RZ8M93HCTJP" />
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\amirk\.android\avd\Pixel_8_Pro_API_34.avd" />
                 </Key>
               </deviceKey>
             </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-02T07:53:49.781955700Z" />
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-03T10:40:28.061299300Z" />
           <runningDeviceTargetsSelectedWithDialog>
             <Target>
               <type value="RUNNING_DEVICE_TARGET" />

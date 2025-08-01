@@ -1,5 +1,6 @@
 package me.amirkazemzade.materialmusicplayer.data.repository
 
+import android.util.Log
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -28,13 +29,16 @@ class QueueRepositoryImpl(
             queueDao
                 .getQueueItemsWithMusicAsFlow()
                 .map { dtoItems -> dtoItems.mapToQueueItemsWithMusic() }
-                .onEach { items -> emit(Status.Success(items)) }
+                .onEach { items ->
+                    Log.d("getQueueItemsWithMusicFlow", "items: $items")
+                    emit(Status.Success(items))
+                }
                 .collect()
         }
 
     override suspend fun setQueue(queue: Queue) = queueDao.setQueue(queue.toQueueDataWithItems())
 
-    override suspend fun clearQueue() = queueDao.deleteQueue()
+    override suspend fun clearQueue() = queueDao.deleteQueueData()
 
     override suspend fun updateQueueData(data: QueueData) =
         queueDao.upsertQueueData(data.toQueueEntity())

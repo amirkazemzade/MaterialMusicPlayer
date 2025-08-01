@@ -6,6 +6,4 @@ import me.amirkazemzade.materialmusicplayer.domain.model.QueueItemWithMusic
 
 data class DraggableListState(
     val items: ImmutableList<QueueItemWithMusic> = persistentListOf(),
-    val draggingItemIndex: Int? = null,
-    val currentPositionIndex: Int? = null,
 )

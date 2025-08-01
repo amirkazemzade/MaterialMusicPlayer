@@ -2,8 +2,8 @@
 accompanistPermissions = "0.34.0"
 activityCompose = "1.8.2"
 agp = "8.2.2"
-composeBom = "2024.01.00"
-composeUi = "1.6.0"
+composeBom = "2024.02.00"
+composeUi = "1.7.0-alpha02"
 composeRules = "0.3.11"
 detekt = "1.23.4"
 espressoCore = "3.5.1"
@@ -11,6 +11,8 @@ haze = "0.5.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 koinAndroid = "3.5.3"
+kotest = "5.8.0"
+kotestAndroid = "1.1.0"
 kotlin = "1.9.21"
 kotlinxCollectionsImmutable = "0.3.7"
 kotlinxDatetime = "0.5.0"
@@ -25,6 +27,7 @@ materialIconsExtended = "1.6.0"
 media3 = "1.2.1"
 navigationCompose = "2.7.6"
 paletteKtx = "1.0.0"
+reorderable = "1.3.1"
 room = "2.6.1"
 sentry = "4.2.0"
 
@@ -96,6 +99,16 @@ koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = 
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinAndroid" }
 koin-androidx-compose-navigation = { group = "io.insert-koin", name = "koin-androidx-compose-navigation", version.ref = "koinAndroid" }
 
+# kotest
+kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+kotest-framework-dataset = { group = "io.kotest", name = "kotest-framework-datatest", version.ref = "kotest" }
+kotest-property = { group = "io.kotest", name = "kotest-property", version.ref = "kotest" }
+kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+
+# kotest android
+kotest-runner-android = { group = "br.com.colman", name = "kotest-runner-android", version.ref = "kotestAndroid" }
+kotest-assertions-android = { group = "br.com.colman", name = "kotest-assertions-android", version.ref = "kotestAndroid" }
+
 # kotlinx
 kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
@@ -103,6 +116,9 @@ kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime",
 # ktor
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+
+# reorderable
+sh-calvin-reorderable = { group = "sh.calvin.reorderable", name = "reorderable", version.ref = "reorderable" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

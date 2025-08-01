@@ -18,38 +18,7 @@ class DraggableListViewModel(val items: ImmutableList<QueueItemWithMusic>) : Vie
     val state: StateFlow<DraggableListState>
         get() = _state
 
-    fun onDragStart(index: Int) {
-        updateDraggingItemIndex(index)
-    }
-
-    fun onDragStopped() {
-        val fromIndex = state.value.draggingItemIndex?.coerceAtLeast(0)
-        val toIndex = state.value.currentPositionIndex?.coerceAtMost(state.value.items.lastIndex)
-
-        if (fromIndex == null || toIndex == null) return
-
-        reorderItem(fromIndex, toIndex)
-    }
-
-    fun updateCurrentPositionIndex(currentPositionIndex: Int) {
-        if (currentPositionIndex == state.value.currentPositionIndex) return
-        _state.update {
-            it.copy(
-                currentPositionIndex = currentPositionIndex,
-            )
-        }
-    }
-
-    private fun updateDraggingItemIndex(draggingItemIndex: Int) {
-        if (draggingItemIndex == state.value.draggingItemIndex) return
-        _state.update {
-            it.copy(
-                draggingItemIndex = draggingItemIndex,
-            )
-        }
-    }
-
-    private fun reorderItem(fromIndex: Int, toIndex: Int) {
+    fun reorderItem(fromIndex: Int, toIndex: Int) {
         val newItems = state.value.items
             .withRepositionedElement(
                 fromIndex = fromIndex,
@@ -58,8 +27,6 @@ class DraggableListViewModel(val items: ImmutableList<QueueItemWithMusic>) : Vie
         _state.update {
             it.copy(
                 items = newItems,
-                draggingItemIndex = null,
-                currentPositionIndex = null,
             )
         }
     }

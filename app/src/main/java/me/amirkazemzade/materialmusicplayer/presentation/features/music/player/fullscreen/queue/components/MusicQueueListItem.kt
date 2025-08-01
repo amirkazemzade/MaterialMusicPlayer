@@ -1,9 +1,6 @@
 package me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.queue.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.DraggableState
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,16 +32,17 @@ import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import me.amirkazemzade.materialmusicplayer.presentation.common.components.AlbumCover
 import me.amirkazemzade.materialmusicplayer.presentation.common.modifiers.applyIf
 import me.amirkazemzade.materialmusicplayer.presentation.common.modifiers.highlight
+import sh.calvin.reorderable.ReorderableItemScope
 
 @Composable
 fun MusicQueueListItem(
     music: MusicFile,
     isDragging: Boolean,
-    draggableState: DraggableState,
+    reorderableItemScope: ReorderableItemScope,
     onClick: () -> Unit,
-    onDragStart: CoroutineScope.(startedPosition: Offset) -> Unit,
-    onDragStopped: CoroutineScope.(velocity: Float) -> Unit,
     modifier: Modifier = Modifier,
+    onDragStarted: suspend CoroutineScope.(startedPosition: Offset) -> Unit = {},
+    onDragStopped: suspend CoroutineScope.(velocity: Float) -> Unit = {},
 ) {
     val zIndex = if (isDragging) 1f else 0f
 
@@ -87,14 +85,14 @@ fun MusicQueueListItem(
 
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(48.dp)
-                .draggable(
-                    state = draggableState,
-                    orientation = Orientation.Vertical,
-                    onDragStarted = onDragStart,
-                    onDragStopped = onDragStopped,
-                )
+            modifier = with(reorderableItemScope) {
+                Modifier
+                    .size(48.dp)
+                    .draggableHandle(
+                        onDragStarted = onDragStarted,
+                        onDragStopped = onDragStopped,
+                    )
+            }
         ) {
             Icon(
                 imageVector = Icons.Rounded.DragHandle,

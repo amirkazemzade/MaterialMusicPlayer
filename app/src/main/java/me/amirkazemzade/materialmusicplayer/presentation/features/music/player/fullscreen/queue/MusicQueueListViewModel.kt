@@ -46,7 +46,7 @@ class MusicQueueListViewModel(
 
         when (event) {
             is MusicQueueListEvent.Play -> controller.play(event.index)
-            is MusicQueueListEvent.Reorder -> TODO()
+            is MusicQueueListEvent.Reorder -> controller.reorderItem(event.id, event.newOrder)
             MusicQueueListEvent.ShuffleQueue -> TODO()
             is MusicQueueListEvent.SortByOrder -> TODO()
             is MusicQueueListEvent.SortByType -> TODO()

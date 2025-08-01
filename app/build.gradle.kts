@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -60,6 +62,13 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "**/attach_hotspot_windows.dll"
+            excludes += "META-INF/licenses/**"
+        }
+    }
+    testOptions {
+        unitTests.all {
+            it.useJUnitPlatform()
         }
     }
 }
@@ -101,6 +110,8 @@ dependencies {
     implementation(libs.material)
 
     implementation(libs.chrisbanes.haze.jetpack.compose)
+
+    implementation(libs.sh.calvin.reorderable)
 
     // Lifecycle
 
@@ -146,11 +157,19 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.androidx.room.testing)
+    testImplementation(libs.kotest.runner.junit5)
+    testImplementation(libs.kotest.assertions.core)
+    testImplementation(libs.kotest.property)
 
     androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.kotest.runner.android)
+    androidTestImplementation(libs.kotest.property)
+    androidTestImplementation(libs.kotest.framework.dataset)
+    androidTestImplementation(libs.kotest.assertions.android)
 
     // Debug
 

@@ -16,11 +16,20 @@ import me.amirkazemzade.materialmusicplayer.data.db.entities.queue.QueueItemEnti
 
 @Dao
 interface QueueDao {
+
+    // Gets
+
     @Query("SELECT * FROM QueueDataEntity")
     fun getQueueData(): QueueDataEntity?
 
     @Query("SELECT id FROM QueueItemEntity WHERE `order` = :order")
     suspend fun getQueueItem(order: Int): Long
+
+    @Query("SELECT * FROM QueueItemEntity WHERE id = :id")
+    suspend fun getQueueItem(id: Long): QueueItemEntity
+
+    @Query("SELECT * FROM QueueItemEntity")
+    suspend fun getQueueItems(): List<QueueItemEntity>
 
     @Query(
         """
@@ -33,12 +42,13 @@ interface QueueDao {
             FROM QueueItemEntity 
             LEFT JOIN MusicEntity 
             WHERE QueueItemEntity.musicId = MusicEntity.id
+            ORDER BY `order`
         """
     )
     fun getQueueMetadataItems(): List<QueueMetadataItemDto>
 
     @Transaction
-    @Query("SELECT * FROM QueueItemEntity")
+    @Query("SELECT * FROM QueueItemEntity ORDER BY `order`")
     fun getQueueItemsWithMusicAsFlow(): Flow<List<QueueItemWithMusicDto>>
 
     @Transaction
@@ -58,8 +68,13 @@ interface QueueDao {
     @Query("SELECT `order` FROM QueueItemEntity ORDER BY `order` DESC LIMIT 1")
     suspend fun getLastOrder(): Int
 
+    // Inserts
+
     @Insert
     suspend fun insertQueueData(data: QueueDataEntity)
+
+    @Upsert
+    suspend fun upsertQueueData(data: QueueDataEntity)
 
     @Insert
     suspend fun insertQueueItem(item: QueueItemEntity)
@@ -67,20 +82,19 @@ interface QueueDao {
     @Insert
     suspend fun insertQueueItems(items: List<QueueItemEntity>)
 
-    @Upsert
-    suspend fun upsertQueueData(data: QueueDataEntity)
+    // Deletes
 
     @Query("DELETE FROM QueueDataEntity")
-    suspend fun deleteQueue()
-
-    @Query("DELETE FROM QueueItemEntity")
-    suspend fun deleteQueueItems()
+    suspend fun deleteQueueData()
 
     @Delete
     suspend fun deleteQueueItem(queueItem: QueueItemEntity)
 
     @Query("DELETE FROM QueueItemEntity WHERE id=:id")
     suspend fun deleteQueueItem(id: Long)
+
+    @Query("DELETE FROM QueueItemEntity")
+    suspend fun deleteQueueItems()
 
     @Transaction
     suspend fun deleteQueueItems(ids: List<Long>) {
@@ -91,7 +105,7 @@ interface QueueDao {
 
     @Transaction
     suspend fun setQueue(queueDataWithItemsDto: QueueDataWithItemsDto) {
-        deleteQueue()
+        deleteQueueData()
         deleteQueueItems()
 
         insertQueueData(queueDataWithItemsDto.data)
@@ -170,8 +184,15 @@ interface QueueDao {
     suspend fun reorderItemInQueue(id: Long, newOrder: Int) {
         val currentOrder = getQueueItemOrder(id)
         if (currentOrder == newOrder) return
-        val swappingItemId = getQueueItem(currentOrder)
-        updateQueueItem(id, newOrder)
-        updateQueueItem(swappingItemId, currentOrder)
+
+        updateQueueItem(id, -1)
+
+        val moveItemDown = currentOrder < newOrder
+        if (moveItemDown) {
+            shiftUpOrders(currentOrder + 1, newOrder)
+        } else {
+
+        }
+
     }
 }

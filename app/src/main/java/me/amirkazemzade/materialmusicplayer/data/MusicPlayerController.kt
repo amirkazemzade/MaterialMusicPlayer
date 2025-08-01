@@ -14,7 +14,6 @@ import me.amirkazemzade.materialmusicplayer.data.mappers.toMedaItemsWithStartPos
 import me.amirkazemzade.materialmusicplayer.data.mappers.toQueue
 import me.amirkazemzade.materialmusicplayer.data.service.MusicQueueUpdateListener
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
-import me.amirkazemzade.materialmusicplayer.domain.model.QueueItem
 import me.amirkazemzade.materialmusicplayer.domain.model.RepeatMode
 import me.amirkazemzade.materialmusicplayer.domain.usecase.QueueUseCases
 import org.koin.java.KoinJavaComponent.get
@@ -143,9 +142,9 @@ class MusicPlayerController(
         }
     }
 
-    fun reorderItem(item: QueueItem, newOrder: Int) {
+    fun reorderItem(id: Long, newOrder: Int) {
         scope.launch {
-            queueUseCases.reorderItemInQueueUseCase(item.id, newOrder)
+            queueUseCases.reorderItemInQueueUseCase(id, newOrder)
         }
     }
 
