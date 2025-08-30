@@ -24,7 +24,7 @@
         android:roundIcon="@mipmap/ic_launcher_waves"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialMusicPlayer"
-        tools:targetApi="34">
+            tools:targetApi="36">
 
         <!-- Sentry -->
         <meta-data

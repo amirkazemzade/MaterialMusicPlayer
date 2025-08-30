@@ -19,8 +19,8 @@ import me.amirkazemzade.materialmusicplayer.presentation.features.music.MusicCon
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.list.MusicListViewModel
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.queue.MusicQueueListViewModel
 import me.amirkazemzade.materialmusicplayer.presentation.navigation.Navigator
-import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val appModule =
@@ -32,7 +32,7 @@ val appModule =
         single {
             Room
                 .databaseBuilder(get(), MusicDatabase::class.java, "musics.db")
-                .fallbackToDestructiveMigration()
+                .fallbackToDestructiveMigration(dropAllTables = true)
                 .build()
         }
         single { get<MusicDatabase>().versionDao }

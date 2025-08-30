@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.haze.HazeDefaults
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
@@ -73,7 +74,9 @@ fun PlayerBottomSheetScaffold(
                     Modifier
                         .haze(
                             state = hazeState,
-                            backgroundColor = MaterialTheme.colorScheme.surface,
+                            style = HazeDefaults.style(
+                                backgroundColor = MaterialTheme.colorScheme.surface
+                            ),
                         ),
                 )
             }

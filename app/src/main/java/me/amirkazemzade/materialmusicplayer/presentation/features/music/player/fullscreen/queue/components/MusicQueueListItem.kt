@@ -26,23 +26,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import kotlinx.coroutines.CoroutineScope
 import me.amirkazemzade.materialmusicplayer.R
 import me.amirkazemzade.materialmusicplayer.domain.model.MusicFile
 import me.amirkazemzade.materialmusicplayer.presentation.common.components.AlbumCover
 import me.amirkazemzade.materialmusicplayer.presentation.common.modifiers.applyIf
 import me.amirkazemzade.materialmusicplayer.presentation.common.modifiers.highlight
-import sh.calvin.reorderable.ReorderableItemScope
+import sh.calvin.reorderable.ReorderableCollectionItemScope
 
 @Composable
 fun MusicQueueListItem(
     music: MusicFile,
     isDragging: Boolean,
-    reorderableItemScope: ReorderableItemScope,
+    reorderableItemScope: ReorderableCollectionItemScope,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onDragStarted: suspend CoroutineScope.(startedPosition: Offset) -> Unit = {},
-    onDragStopped: suspend CoroutineScope.(velocity: Float) -> Unit = {},
+    onDragStarted: (startedPosition: Offset) -> Unit = {},
+    onDragStopped: () -> Unit = {},
 ) {
     val zIndex = if (isDragging) 1f else 0f
 

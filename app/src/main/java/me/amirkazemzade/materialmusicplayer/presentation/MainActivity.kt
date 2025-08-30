@@ -8,7 +8,6 @@ import androidx.navigation.compose.rememberNavController
 import me.amirkazemzade.materialmusicplayer.presentation.common.components.ReadAudioPermissionHandler
 import me.amirkazemzade.materialmusicplayer.presentation.navigation.NavigationComponent
 import me.amirkazemzade.materialmusicplayer.presentation.ui.theme.MaterialMusicPlayerTheme
-import org.koin.androidx.compose.KoinAndroidContext
 import org.koin.core.annotation.KoinExperimentalAPI
 
 class MainActivity : ComponentActivity() {
@@ -17,14 +16,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
-            KoinAndroidContext {
                 MaterialMusicPlayerTheme {
                     ReadAudioPermissionHandler {
                         val navController = rememberNavController()
                         NavigationComponent(navController = navController)
                     }
                 }
-            }
         }
     }
 }

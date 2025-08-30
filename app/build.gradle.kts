@@ -7,16 +7,17 @@ plugins {
     alias(libs.plugins.arturboschDetekt)
     alias(libs.plugins.sentry)
     alias(libs.plugins.room)
+    alias(libs.plugins.kotlinCompose)
 }
 
 android {
     namespace = "me.amirkazemzade.materialmusicplayer"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "me.amirkazemzade.materialmusicplayer"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "0.2.2"
 

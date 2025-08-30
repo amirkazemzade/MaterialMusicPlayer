@@ -10,7 +10,7 @@
     <option name="enableDetekt" value="true" />
     <option name="pluginJars">
       <list>
-        <option value="D:/Softwares/Intalled/twiiter_maintaining_fork_detekt_plugin/detekt-compose-0.3.11-all.jar" />
+        <option value="$PROJECT_DIR$/../../twiiter_maintaining_fork_detekt_plugin/detekt-compose-0.4.27-all.jar" />
       </list>
     </option>
   </component>

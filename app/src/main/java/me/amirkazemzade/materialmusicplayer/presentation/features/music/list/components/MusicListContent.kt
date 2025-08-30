@@ -2,7 +2,6 @@ package me.amirkazemzade.materialmusicplayer.presentation.features.music.list.co
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.common.math.IntMath.pow
+import dev.chrisbanes.haze.HazeDefaults
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
@@ -67,25 +67,29 @@ fun MusicListContent(
         }
     ) { internalContentPadding ->
         LazyColumn(
+            contentPadding = internalContentPadding + contentPadding,
             modifier = Modifier
                 .fillMaxSize()
                 .haze(
                     hazeState,
-                    MaterialTheme.colorScheme.surface
-                ),
-            contentPadding = internalContentPadding + contentPadding,
+                    style = HazeDefaults.style(
+                        backgroundColor = MaterialTheme.colorScheme.surface
+                    )
+                )
         ) {
             itemsIndexed(musics, key = { _, item -> item.id }) { index, music ->
                 MusicListItem(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .animateItemPlacement(animationSpec = tween(700)),
+                        .animateItem(
+                            // TODO: apply animation with new api
+//                            animationSpec = tween(700)
+                        ),
                     music = music,
                     onClick = { onItemClick(index) },
                 )
             }
         }
-
     }
 }
 

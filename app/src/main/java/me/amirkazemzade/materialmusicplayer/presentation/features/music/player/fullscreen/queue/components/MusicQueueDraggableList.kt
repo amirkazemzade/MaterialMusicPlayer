@@ -15,7 +15,7 @@ import me.amirkazemzade.materialmusicplayer.domain.model.QueueItemWithMusic
 import me.amirkazemzade.materialmusicplayer.presentation.common.extensions.withRepositionedElement
 import me.amirkazemzade.materialmusicplayer.presentation.features.music.player.fullscreen.queue.events.MusicQueueListEvent
 import sh.calvin.reorderable.ReorderableItem
-import sh.calvin.reorderable.rememberReorderableLazyColumnState
+import sh.calvin.reorderable.rememberReorderableLazyListState
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -30,7 +30,7 @@ fun MusicQueueDraggableList(
 
     val lazyListState = rememberLazyListState()
     val reorderableLazyColumnState =
-        rememberReorderableLazyColumnState(lazyListState = lazyListState) { from, to ->
+        rememberReorderableLazyListState(lazyListState = lazyListState) { from, to ->
             queueItems = queueItems.withRepositionedElement(from.index, to.index)
         }
 
@@ -44,7 +44,7 @@ fun MusicQueueDraggableList(
         ) { index, queueItem ->
 
             ReorderableItem(
-                reorderableLazyListState = reorderableLazyColumnState,
+                state = reorderableLazyColumnState,
                 key = queueItem.id
             ) { isDragging ->
                 MusicQueueListItem(
